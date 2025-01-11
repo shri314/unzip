@@ -3,6 +3,8 @@
 #include "msgPos.hpp"
 #include "msgSeg.hpp"
 #include "msgFmt.hpp"
+#include "Span.hpp"
+#include "Hexed.hpp"
 #include "AsBytes.hpp"
 
 #include <optional>

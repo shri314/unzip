@@ -4,6 +4,7 @@
 #include "msgSeg.hpp"
 #include "msgFmt.hpp"
 #include "msgDyn.hpp"
+#include "Span.hpp"
 #include "Hexed.hpp"
 #include "AsBytes.hpp"
 
