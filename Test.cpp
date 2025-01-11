@@ -23,8 +23,8 @@ int main()
             x = i;
         }
 
-        auto h1 = DnsHeader::read_new(&buf[0], &buf[1024]);
-        auto h2 = DnsHeader::read_old(&buf[0], &buf[1024]);
+        auto h1 = DnsHeader::read_new(buf);
+        auto h2 = DnsHeader::read_old(buf);
 
         assert(h1.has_value());
         assert(h2.has_value());
@@ -37,7 +37,7 @@ int main()
         read(fd, buf, 1024);
         close(fd);
 
-        auto h1 = zip::LFHeader::read(&buf[0], &buf[1024]);
+        auto h1 = zip::LFHeader::read(buf);
         std::cout << h1.value() << "\n";
     }
 
@@ -79,20 +79,15 @@ int main()
             buf.resize(r);
         }
 
-        for (auto x : zip::EOCDRec::SIG)
-        {
-            std::cout << Hexed(x, "0x", 2) << "\n";
-        }
-        for (auto x : zip::LFHeader::SIG)
-        {
-            std::cout << Hexed(x, "0x", 2) << "\n";
-        }
+        RdBuf_t match{
+            std::find_end(buf.begin(), buf.end(), zip::EOCDRec::SIG.begin(), zip::EOCDRec::SIG.end()),
+            buf.end()
+        };
 
-        auto sigPos = std::find_end(&buf[0], &buf[sz], zip::EOCDRec::SIG.begin(), zip::EOCDRec::SIG.end());
-        if (sigPos != &buf[sz])
+        if (!match.Empty())
         {
-            std::cout << "something is found with sz = " << (&buf[sz] - sigPos) << "\n";
-            auto hh = zip::EOCDRec::read(sigPos, &buf[sz]);
+            std::cout << "something is found with sz = " << match.Size() << "\n";
+            auto hh = zip::EOCDRec::read(match);
             if (hh)
                 std::cout << *hh << "\n";
             else

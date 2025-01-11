@@ -12,6 +12,9 @@
 #include <string>
 #include <iomanip>
 
+using RdBuf_t = Span<const unsigned char>;
+using WrBuf_t = Span<unsigned char>;
+
 namespace zip
 {
 
@@ -86,12 +89,12 @@ struct LFHeader
             << " }";
     }
 
-    static std::optional<LFHeader> read(const unsigned char* Beg, const unsigned char* End)
+    static std::optional<LFHeader> read(RdBuf_t Buf)
     {
         std::optional<LFHeader> h = LFHeader{};
 
-        auto [_, s] = Format::read(Beg, End, *h);
-        if (!s)
+        auto b = Format::read(Buf, *h);
+        if (!b)
         {
             h.reset();
         }

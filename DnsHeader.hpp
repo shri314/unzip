@@ -3,8 +3,12 @@
 #include "msgPos.hpp"
 #include "msgSeg.hpp"
 #include "msgFmt.hpp"
+#include "Span.hpp"
 
 #include <optional>
+
+using RdBuf_t = Span<const unsigned char>;
+using WrBuf_t = Span<unsigned char>;
 
 struct DnsHeader
 {
@@ -45,12 +49,12 @@ struct DnsHeader
             l.ra == r.ra;
     }
 
-    static constexpr std::optional<DnsHeader> read_new(const unsigned char* Beg, const unsigned char* End)
+    static constexpr std::optional<DnsHeader> read_new(RdBuf_t Buf)
     {
         std::optional<DnsHeader> h = DnsHeader{};
 
-        auto [_, s] = Format::read(Beg, End, *h);
-        if (!s)
+        auto b = Format::read(Buf, *h);
+        if (!b)
         {
             h.reset();
         }
@@ -58,11 +62,11 @@ struct DnsHeader
         return h;
     }
 
-    static constexpr std::optional<DnsHeader> read_old(const unsigned char* Beg, const unsigned char* End)
+    static constexpr std::optional<DnsHeader> read_old(RdBuf_t Buf)
     {
         std::optional<DnsHeader> h = DnsHeader{};
 
-        if (End - Beg < 4)
+        if (Buf.Size() < 4)
         {
             h.reset();
             return h;
@@ -70,52 +74,52 @@ struct DnsHeader
 
         {
             uint16_t x{};
-            memcpy(&x, Beg, sizeof(x));
+            memcpy(&x, &Buf[0], sizeof(x));
             h->id = (x >> 0) & 0xFFFF;
         }
-        Beg += 2;
+        Buf = Buf.SubSpan(2);
         {
             uint8_t x{};
-            memcpy(&x, Beg, sizeof(x));
+            memcpy(&x, &Buf[0], sizeof(x));
             h->qr = (x >> 0) & 0x01;
         }
         {
             uint8_t x{};
-            memcpy(&x, Beg, sizeof(x));
+            memcpy(&x, &Buf[0], sizeof(x));
             h->opcode = ( x >> 1 ) & 0x0F;
         }
         {
             uint8_t x{};
-            memcpy(&x, Beg, sizeof(x));
+            memcpy(&x, &Buf[0], sizeof(x));
             h->aa = ( x >> 5 ) & 0x01;
         }
         {
             uint8_t x{};
-            memcpy(&x, Beg, sizeof(x));
+            memcpy(&x, &Buf[0], sizeof(x));
             h->tc = ( x >> 6 ) & 0x01;
         }
         {
             uint8_t x{};
-            memcpy(&x, Beg, sizeof(x));
+            memcpy(&x, &Buf[0], sizeof(x));
             h->rd = ( x >> 7 ) & 0x01;
         }
-        Beg += 1;
+        Buf = Buf.SubSpan(1);
         {
             uint8_t x{};
-            memcpy(&x, Beg, sizeof(x));
+            memcpy(&x, &Buf[0], sizeof(x));
             h->ra = ( x >> 0 ) & 0x01;
         }
         // {
         //     uint8_t x{};
-        //     memcpy(&x, Beg, sizeof(x));
+        //     memcpy(&x, &Buf[0], sizeof(x));
         //     h->z = ( x >> 1 ) & 0x07;
         // }
         {
             uint8_t x{};
-            memcpy(&x, Beg, sizeof(x));
+            memcpy(&x, &Buf[0], sizeof(x));
             h->rcode = ( x >> 4 ) & 0x0F;
         }
-        Beg += 1;
+        Buf = Buf.SubSpan(1);
 
         return h;
     }

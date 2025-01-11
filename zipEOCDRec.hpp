@@ -9,6 +9,9 @@
 #include <ostream>
 #include <string>
 
+using RdBuf_t = Span<const unsigned char>;
+using WrBuf_t = Span<unsigned char>;
+
 namespace zip
 {
 
@@ -77,12 +80,12 @@ struct EOCDRec
         return Format::MaxBytes();
     }
 
-    static std::optional<EOCDRec> read(const unsigned char* Beg, const unsigned char* End)
+    static std::optional<EOCDRec> read(RdBuf_t Buf)
     {
         std::optional<EOCDRec> h = EOCDRec{};
 
-        auto [_, s] = Format::read(Beg, End, *h);
-        if (!s)
+        auto b = Format::read(Buf, *h);
+        if (!b)
         {
             h.reset();
         }
