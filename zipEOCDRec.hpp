@@ -25,9 +25,9 @@ struct EOCDRec
     uint16_t totalEntriesThisDisk;
     uint16_t totalEntries;
     uint32_t sizeOfCentralDir;
-    uint32_t offsetOfCentralDirStartDisk;
-    uint16_t zipFileCommentLen;
-    std::string zipFileComment;
+    uint32_t offsetOfCentralDir;
+    uint16_t commentLen;
+    std::string comment;
 
     using Format = msg::Fmt<
         msg::Seg<&EOCDRec::sig>,
@@ -36,23 +36,22 @@ struct EOCDRec
         msg::Seg<&EOCDRec::totalEntriesThisDisk>,
         msg::Seg<&EOCDRec::totalEntries>,
         msg::Seg<&EOCDRec::sizeOfCentralDir>,
-        msg::Seg<&EOCDRec::offsetOfCentralDirStartDisk>,
-        msg::Seg<&EOCDRec::zipFileCommentLen>,
-        msg::Seg<&EOCDRec::zipFileComment, msg::Dyn<&EOCDRec::zipFileCommentLen>>
+        msg::Seg<&EOCDRec::offsetOfCentralDir>,
+        msg::Seg<&EOCDRec::commentLen>,
+        msg::Seg<&EOCDRec::comment, msg::Dyn<&EOCDRec::commentLen>>
     >;
 
     friend bool operator==(const EOCDRec& l, const EOCDRec& r)
     {
-        return
-            l.sig == r.sig &&
-            l.thisDiskNum == r.thisDiskNum &&
-            l.startDiskNum == r.startDiskNum &&
-            l.totalEntriesThisDisk == r.totalEntriesThisDisk &&
-            l.totalEntries == r.totalEntries &&
-            l.sizeOfCentralDir == r.sizeOfCentralDir &&
-            l.offsetOfCentralDirStartDisk == r.offsetOfCentralDirStartDisk &&
-            l.zipFileCommentLen == r.zipFileCommentLen &&
-            l.zipFileComment == r.zipFileComment;
+        return l.sig == r.sig
+            && l.thisDiskNum == r.thisDiskNum
+            && l.startDiskNum == r.startDiskNum
+            && l.totalEntriesThisDisk == r.totalEntriesThisDisk
+            && l.totalEntries == r.totalEntries
+            && l.sizeOfCentralDir == r.sizeOfCentralDir
+            && l.offsetOfCentralDir == r.offsetOfCentralDir
+            && l.commentLen == r.commentLen
+            && l.comment == r.comment;
     }
 
     friend std::ostream& operator<<(std::ostream& os, const EOCDRec& r)
@@ -64,9 +63,8 @@ struct EOCDRec
             << ", " << "totalEntriesThisDisk:" << r.totalEntriesThisDisk
             << ", " << "totalEntries:" << r.totalEntries
             << ", " << "sizeOfCentralDir:" << r.sizeOfCentralDir
-            << ", " << "offsetOfCentralDirStartDisk:" << r.offsetOfCentralDirStartDisk
-            << ", " << "zipFileCommentLen:" << r.zipFileCommentLen
-            << ", " << "zipFileComment:" << std::quoted(r.zipFileComment)
+            << ", " << "offsetOfCentralDir:" << r.offsetOfCentralDir
+            << ", " << "comment:" << std::quoted(r.comment)
             << " }";
     }
 

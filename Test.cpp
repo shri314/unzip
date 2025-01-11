@@ -1,7 +1,9 @@
 #include "DnsHeader.hpp"
 #include "zipLFHeader.hpp"
 #include "zipEOCDRec.hpp"
+#include "zipCDFHeader.hpp"
 #include "ScopeExit.hpp"
+#include "ForEachFindEnd.hpp"
 
 #include <cassert>
 #include <cstdlib>
@@ -12,91 +14,129 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-int main()
+
+bool Validate(const zip::EOCDRec& r, size_t zipFileSize)
 {
-    // https://godbolt.org/z/E5hhvEa5o
-    for (size_t i = 0; i < 256; ++i)
+    return
+        AsBytes<uint32_t, unsigned char>(r.sig) == zip::EOCDRec::SIG
+        && r.thisDiskNum == 0u
+        && r.startDiskNum == 0u
+        && r.totalEntries == r.totalEntriesThisDisk
+        && r.commentLen == r.comment.size()
+        && r.offsetOfCentralDir < zipFileSize
+        && r.sizeOfCentralDir <= zipFileSize - r.offsetOfCentralDir
+        && r.sizeOfCentralDir <= r.totalEntries * zip::CDFHeader::MaxBytes();
+}
+
+
+int main(int argc, const char* argv[])
+{
+    if (argc != 2)
     {
-        unsigned char buf[1024];
-        for(unsigned char& x : buf)
-        {
-            x = i;
-        }
-
-        auto h1 = DnsHeader::read_new(buf);
-        auto h2 = DnsHeader::read_old(buf);
-
-        assert(h1.has_value());
-        assert(h2.has_value());
-        assert(h1 == h2);
+        std::cout << "Usage: " << argv[0] << " <zip-file>\n";
+        return -1;
     }
 
-    {
-        int fd = open("./assets/test1.zip", O_RDONLY|O_CLOEXEC);
-        unsigned char buf[1024] = {};
-        read(fd, buf, 1024);
-        close(fd);
-
-        auto h1 = zip::LFHeader::read(buf);
-        std::cout << h1.value() << "\n";
-    }
+    const char* fname = argv[1];
 
     {
-        int fd = open("./assets/test1.zip", O_RDONLY|O_CLOEXEC);
+        int fd = open(fname, O_RDONLY|O_CLOEXEC);
         if (fd <= -1)
         {
-            std::cout << "E1\n";
+            std::cout << "file: " << fname << " could not be opened\n";
             return -1;
         }
 
         ScopeExit cleanup{[&fd]() { close(fd); }};
 
-        struct stat sbuf{};
+        size_t zipFileSize = 0u;
         {
+            struct stat sbuf{};
             int r = fstat(fd, &sbuf);
             if (r <= -1)
             {
                 return -1;
             }
+
+            zipFileSize = sbuf.st_size;
         }
 
-        size_t sz = std::min<size_t>(zip::EOCDRec::MaxBytes(), sbuf.st_size);
         {
-            if (sz < zip::EOCDRec::MinBytes())
+            std::vector<unsigned char> eocdBuf;
+            {
+                size_t sz = std::min<size_t>(zip::EOCDRec::MaxBytes(), zipFileSize);
+                if (sz < zip::EOCDRec::MinBytes())
+                    return -1;
+
+                int r = lseek(fd, zipFileSize - sz, SEEK_SET);
+                if (r <= -1)
+                    return -1;
+
+                eocdBuf.resize(sz);
+                r = read(fd, &eocdBuf[0], sz);
+                if (r <= -1)
+                    return -1;
+
+                eocdBuf.resize(r);
+            }
+
+            int e = 0;
+            ForEachFindEnd(
+                    eocdBuf,
+                    zip::EOCDRec::SIG,
+                    [&e, fd, zipFileSize](RdBuf_t match)
+                    {
+                        auto eocd = zip::EOCDRec::read(match);
+                        if (!eocd || !Validate(*eocd, zipFileSize))
+                        {
+                            std::cout << "eocd is bogus (1)" << "\n";
+
+                            return true;
+                        }
+
+                        std::cout << "eocd: " << *eocd << "\n";
+
+                        int r = lseek(fd, eocd->offsetOfCentralDir, SEEK_SET);
+                        if (r <= -1)
+                        {
+                            e = -1;
+                            return false;
+                        }
+
+                        std::vector<unsigned char> v1;
+                        size_t sz = std::min<size_t>(
+                                            zip::CDFHeader::MaxBytes() * eocd->totalEntries,
+                                            eocd->sizeOfCentralDir
+                                        );
+                        v1.resize(sz);
+                        r = read(fd, &v1[0], sz);
+                        if (r <= -1)
+                        {
+                            e = -1;
+                            return false;
+                        }
+
+                        auto cdfh = zip::CDFHeader::read(RdBuf_t(v1));
+                        if (!cdfh) // || !Validate(*cdfh, zipFileSize))
+                        {
+                            std::cout << "cdfh is bogus (1)" << "\n";
+
+                            return true;
+                        }
+
+                        std::cout << "cdfh: " << *cdfh << "\n";
+
+                        return false;
+                    }
+                );
+
+            if (e == -1)
+            {
                 return -1;
+            }
         }
-
-        std::vector<unsigned char> buf(sz);
-        {
-            int r = lseek(fd, sbuf.st_size - sz, SEEK_SET);
-            if (r <= -1)
-                return -1;
-
-            r = read(fd, &buf[0], sz);
-            if (r <= -1)
-                return -1;
-
-            buf.resize(r);
-        }
-
-        RdBuf_t match{
-            std::find_end(buf.begin(), buf.end(), zip::EOCDRec::SIG.begin(), zip::EOCDRec::SIG.end()),
-            buf.end()
-        };
-
-        if (!match.Empty())
-        {
-            std::cout << "something is found with sz = " << match.Size() << "\n";
-            auto hh = zip::EOCDRec::read(match);
-            if (hh)
-                std::cout << *hh << "\n";
-            else
-                std::cout << "bogus\n";
-        }
-
-        std::cout << "min = " << zip::EOCDRec::MinBytes() << "\n";
-        std::cout << "max = " << zip::EOCDRec::MaxBytes() << "\n";
     }
 
+    std::cout << "DONE\n";
     return 0;
 }
