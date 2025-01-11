@@ -9,29 +9,28 @@ namespace utils
 
 class MemoryMappedFile
 {
-
 public:
-    MemoryMappedFile (
+    MemoryMappedFile(
         void
-        ) = default;
+    ) = default;
 
-    MemoryMappedFile (
+    MemoryMappedFile(
         const char* Fname
-        );
+    );
 
-    MemoryMappedFile (
+    MemoryMappedFile(
         MemoryMappedFile&& Rhs
-        )
-        : m_Buf(std::exchange(Rhs.m_Buf, {}))
-        , m_Err(std::exchange(Rhs.m_Err, ""))
-        , m_ErrCtx(std::exchange(Rhs.m_ErrCtx, ""))
+    )
+      : m_Buf(std::exchange(Rhs.m_Buf, {}))
+      , m_Err(std::exchange(Rhs.m_Err, ""))
+      , m_ErrCtx(std::exchange(Rhs.m_ErrCtx, ""))
     {
     }
 
     MemoryMappedFile&
-    operator= (
+    operator=(
         MemoryMappedFile&& Rhs
-        )
+    )
     {
         MemoryMappedFile tmp = std::move(Rhs);
 
@@ -41,21 +40,20 @@ public:
         return *this;
     }
 
-    MemoryMappedFile (
+    MemoryMappedFile(
         const MemoryMappedFile& Rhs
-        ) = delete;
+    ) = delete;
 
     MemoryMappedFile&
-    operator= (
+    operator=(
         const MemoryMappedFile& Rhs
-        ) = delete;
+    ) = delete;
 
-    static
-    void
-    swap (
+    static void
+    swap(
         MemoryMappedFile& Lhs,
         MemoryMappedFile& Rhs
-        )
+    )
     {
         using std::swap;
         swap(Lhs.m_Buf, Rhs.m_Buf);
@@ -63,14 +61,14 @@ public:
         swap(Lhs.m_ErrCtx, Rhs.m_ErrCtx);
     }
 
-    ~MemoryMappedFile (
+    ~MemoryMappedFile(
         void
-        );
+    );
 
     bool
-    IsValid (
+    IsValid(
         void
-        ) const
+    ) const
     {
         return m_Buf.data() != nullptr;
     }
@@ -78,20 +76,20 @@ public:
     RdBuf_t
     Buffer(
         void
-        ) const
+    ) const
     {
         return m_Buf;
     }
 
     std::pair<const char*, const char*>
-    Error (
+    Error(
         void
-        ) const;
+    ) const;
 
 private:
     RdBuf_t m_Buf;
     const char* m_ErrCtx = "";
-    const char* m_Err = "";
+    const char* m_Err    = "";
 };
 
 }

@@ -8,9 +8,10 @@ namespace utils
 {
 
 template<size_t width_bits>
-constexpr auto UIntX()
+constexpr auto
+UIntX()
 {
-    static_assert( width_bits > 0 && width_bits <= 64 );
+    static_assert(width_bits > 0 && width_bits <= 64);
 
     if constexpr (width_bits <= 8)
     {
@@ -32,7 +33,8 @@ constexpr auto UIntX()
 
 //////////////////////////////////////////////////////
 
-inline void test_UIntX()
+inline void
+test_UIntX()
 {
     static_assert(std::is_same_v<decltype(UIntX<1u>()), uint8_t>);
     static_assert(std::is_same_v<decltype(UIntX<8u>()), uint8_t>);

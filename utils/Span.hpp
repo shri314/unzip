@@ -12,123 +12,117 @@ namespace utils
 template<class T>
 struct Span
 {
-    constexpr
-    Span (
+    constexpr Span(
         void
-        ) noexcept = default;
+    ) noexcept
+        = default;
 
-    constexpr
-    Span (
+    constexpr Span(
         const Span&
-        ) noexcept = default;
+    ) noexcept
+        = default;
 
-    constexpr
-    Span (
+    constexpr Span(
         Span&&
-        ) noexcept = default;
+    ) noexcept
+        = default;
 
-    ~Span (
+    ~Span(
         void
-        ) noexcept = default;
+    ) noexcept
+        = default;
 
     Span&
-    operator= (
+    operator=(
         const Span&
-        ) noexcept = default;
+    ) noexcept
+        = default;
 
     Span&
-    operator= (
+    operator=(
         Span&&
-        ) noexcept = default;
+    ) noexcept
+        = default;
 
     template<class U>
-    constexpr
-    Span (
+    constexpr Span(
         U* Beg,
         size_t Sz
-        ) noexcept
-        : m_Data(Beg)
-        , m_Sz(Sz)
+    ) noexcept
+      : m_Data(Beg)
+      , m_Sz(Sz)
     {
     }
 
     template<class IteratorT>
-    constexpr
-    Span (
+    constexpr Span(
         IteratorT BegIt,
         IteratorT EndIt
-        ) noexcept
-        : m_Data(ToAddress(BegIt))
-        , m_Sz(EndIt - BegIt)
+    ) noexcept
+      : m_Data(ToAddress(BegIt))
+      , m_Sz(EndIt - BegIt)
     {
     }
 
     template<class U, size_t N>
-    constexpr
-    Span (
+    constexpr Span(
         U (&arr)[N]
-        ) noexcept
-        : m_Data(&arr[0])
-        , m_Sz(N)
+    ) noexcept
+      : m_Data(&arr[0])
+      , m_Sz(N)
     {
     }
 
     template<class U, size_t N>
-    constexpr
-    Span (
+    constexpr Span(
         std::array<U, N>& arr
-        ) noexcept
-        : m_Data(arr.data())
-        , m_Sz(N)
+    ) noexcept
+      : m_Data(arr.data())
+      , m_Sz(N)
     {
     }
 
     template<class U, size_t N>
-    constexpr
-    Span (
+    constexpr Span(
         const std::array<U, N>& arr
-        ) noexcept
-        : m_Data(arr.data())
-        , m_Sz(N)
+    ) noexcept
+      : m_Data(arr.data())
+      , m_Sz(N)
     {
     }
 
     template<class U>
-    constexpr
-    Span (
+    constexpr Span(
         const Span<U>& arr
-        ) noexcept
-        : m_Data(arr.data())
-        , m_Sz(arr.size())
+    ) noexcept
+      : m_Data(arr.data())
+      , m_Sz(arr.size())
     {
     }
 
     template<
         class ContigContainerT,
-        class = std::enable_if_t<!std::is_same_v<std::decay_t<ContigContainerT>, Span>>
-    >
-    constexpr
-    Span (
+        class = std::enable_if_t<!std::is_same_v<std::decay_t<ContigContainerT>, Span>>>
+    constexpr Span(
         ContigContainerT&& Cont
-        ) noexcept
-        : m_Data(&Cont[0])
-        , m_Sz(Cont.size())
+    ) noexcept
+      : m_Data(&Cont[0])
+      , m_Sz(Cont.size())
     {
     }
 
-    constexpr
-    T*
-    data (
+    constexpr T*
+    data(
         void
-        ) const noexcept
+    ) const noexcept
     {
         return m_Data;
     }
 
     T&
-    operator[] (
+    operator[](
         size_t Index
-        )
+    )
     {
         assert(m_Data != nullptr && m_Sz > 0 && Index < m_Sz);
 
@@ -136,9 +130,9 @@ struct Span
     }
 
     T&
-    front (
+    front(
         void
-        ) const
+    ) const
     {
         assert(m_Sz > 0u);
 
@@ -146,112 +140,108 @@ struct Span
     }
 
     T&
-    back (
+    back(
         void
-        ) const
+    ) const
     {
         assert(m_Sz > 0u);
 
         return (*this)[m_Sz - 1u];
     }
 
-    const T* cbegin() const
+    const T*
+    cbegin() const
     {
         return m_Data;
     }
 
-    const T* cend() const
+    const T*
+    cend() const
     {
         return m_Data + m_Sz;
     }
 
-    T* begin() const
+    T*
+    begin() const
     {
         return m_Data;
     }
 
-    T* end() const
+    T*
+    end() const
     {
         return m_Data + m_Sz;
     }
 
-    constexpr
-    size_t
-    size (
+    constexpr size_t
+    size(
         void
-        ) const noexcept
+    ) const noexcept
     {
         return m_Sz;
     }
 
-    constexpr
-    bool
-    empty (
+    constexpr bool
+    empty(
         void
-        ) const noexcept
+    ) const noexcept
     {
         return m_Sz == 0u;
     }
 
-    constexpr
-    Span
-    first (
+    constexpr Span
+    first(
         size_t Count
-        ) const
+    ) const
     {
         assert(Count <= m_Sz);
 
-        return Span{m_Data, std::min(m_Sz, Count)};
+        return Span{ m_Data, std::min(m_Sz, Count) };
     }
 
-    constexpr
-    Span
-    last (
+    constexpr Span
+    last(
         size_t Count
-        ) const
+    ) const
     {
         assert(Count <= m_Sz);
 
-        return Span{m_Data + m_Sz - std::min(m_Sz, Count), std::min(m_Sz, Count)};
+        return Span{ m_Data + m_Sz - std::min(m_Sz, Count), std::min(m_Sz, Count) };
     }
 
-    constexpr
-    Span
-    subspan (
+    constexpr Span
+    subspan(
         size_t Offset
-        ) const
+    ) const
     {
         assert(Offset <= m_Sz);
 
-        return Span{m_Data + std::min(m_Sz, Offset), m_Sz - std::min(m_Sz, Offset)};
+        return Span{ m_Data + std::min(m_Sz, Offset), m_Sz - std::min(m_Sz, Offset) };
     }
 
-    constexpr
-    Span
-    subspan (
+    constexpr Span
+    subspan(
         size_t Offset,
         size_t Count
-        ) const
+    ) const
     {
         assert(Offset <= m_Sz && Count <= m_Sz - Offset);
 
-        return Span{m_Data + std::min(m_Sz, Offset), std::min(m_Sz - std::min(m_Sz, Offset), Count)};
+        return Span{ m_Data + std::min(m_Sz, Offset), std::min(m_Sz - std::min(m_Sz, Offset), Count) };
     }
 
-    constexpr
-    friend
-    bool
-    operator== (
+    constexpr friend bool
+    operator==(
         const Span& Lhs,
         const Span& Rhs
-        )
+    )
     {
         return Lhs.data() == Rhs.data()
             && Lhs.size() == Rhs.size();
     }
 
 private:
-    T* m_Data = nullptr;
+    T* m_Data   = nullptr;
     size_t m_Sz = 0u;
 };
 

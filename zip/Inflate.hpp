@@ -8,9 +8,9 @@ namespace zip
 {
 
 int
-Inflate (
+Inflate(
     utils::RdBuf_t Buf,
     std::function<void(unsigned char)> Cb
-    );
+);
 
 }

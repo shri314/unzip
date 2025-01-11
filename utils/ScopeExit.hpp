@@ -4,7 +4,7 @@ template<class Fn>
 struct ScopeExit
 {
     ScopeExit(Fn f)
-        : m_f(std::move(f))
+      : m_f(std::move(f))
     {
     }
 
@@ -14,7 +14,7 @@ struct ScopeExit
         {
             m_f();
         }
-        catch(...)
+        catch (...)
         {
         }
     }
@@ -22,4 +22,3 @@ struct ScopeExit
 private:
     Fn m_f;
 };
-

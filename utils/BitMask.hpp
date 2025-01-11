@@ -5,10 +5,11 @@
 namespace utils
 {
 
-template <typename R>
-constexpr R BitMask(size_t BitWidth)
+template<typename R>
+constexpr R
+BitMask(size_t BitWidth)
 {
-    static_assert( std::is_unsigned_v<R> );
+    static_assert(std::is_unsigned_v<R>);
 
     //
     // https://stackoverflow.com/questions/1392059/algorithm-to-generate-bit-mask
@@ -18,7 +19,8 @@ constexpr R BitMask(size_t BitWidth)
 
 /////////////////////////////////////////////////////////////
 
-inline void test_BitMask()
+inline void
+test_BitMask()
 {
     static_assert(BitMask<uint8_t>(0u) == 0x0u);
     static_assert(BitMask<uint8_t>(1u) == 0x1u);

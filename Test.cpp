@@ -8,12 +8,10 @@
 #include <cassert>
 #include <iostream>
 
-
-constexpr
-bool Validate(const zip::EOCDRec& r, size_t zipFileSize)
+constexpr bool
+Validate(const zip::EOCDRec& r, size_t zipFileSize)
 {
-    return
-        AsBytes<uint32_t, unsigned char>(r.sig) == zip::EOCDRec::SIG
+    return AsBytes<uint32_t, unsigned char>(r.sig) == zip::EOCDRec::SIG
         && r.thisDiskNum == 0u
         && r.startDiskNum == 0u
         && r.totalEntries == r.totalEntriesThisDisk
@@ -24,12 +22,10 @@ bool Validate(const zip::EOCDRec& r, size_t zipFileSize)
         && r.sizeOfCentralDir >= r.totalEntries * zip::CDFHeader::MinBytes();
 }
 
-
-constexpr
-bool Validate(const zip::CDFHeader& r, const zip::EOCDRec& eocd, size_t zipFileSize)
+constexpr bool
+Validate(const zip::CDFHeader& r, const zip::EOCDRec& eocd, size_t zipFileSize)
 {
-    return
-        AsBytes<uint32_t, unsigned char>(r.sig) == zip::CDFHeader::SIG
+    return AsBytes<uint32_t, unsigned char>(r.sig) == zip::CDFHeader::SIG
         && r.diskNum == 0u
         && r.nameLen == r.name.size()
         && r.exFieldLen == r.exField.size()
@@ -39,20 +35,18 @@ bool Validate(const zip::CDFHeader& r, const zip::EOCDRec& eocd, size_t zipFileS
         && eocd.offsetOfCentralDir - r.offsetOfLFHeader >= zip::LFHeader::MinBytes();
 }
 
-
-constexpr
-bool Validate(const zip::LFHeader& r, const zip::CDFHeader& cdfh, const zip::EOCDRec& eocd, size_t zipFileSize)
+constexpr bool
+Validate(const zip::LFHeader& r, const zip::CDFHeader& cdfh, const zip::EOCDRec& eocd, size_t zipFileSize)
 {
-    return
-        AsBytes<uint32_t, unsigned char>(r.sig) == zip::LFHeader::SIG
+    return AsBytes<uint32_t, unsigned char>(r.sig) == zip::LFHeader::SIG
         && r.nameLen == r.name.size()
         && r.exFieldLen == r.exField.size()
         && r.compressedSz < zipFileSize
         && r.compressedSz < eocd.offsetOfCentralDir;
 }
 
-
-int main(int argc, const char* argv[])
+int
+main(int argc, const char* argv[])
 {
     if (argc != 2)
     {
@@ -63,7 +57,7 @@ int main(int argc, const char* argv[])
     const char* fname = argv[1];
 
     {
-        utils::MemoryMappedFile zipFile{fname};
+        utils::MemoryMappedFile zipFile{ fname };
         if (!zipFile.IsValid())
         {
             std::cerr << "file: " << fname << " could not be mmapped\n";
@@ -73,92 +67,93 @@ int main(int argc, const char* argv[])
         utils::RdBuf_t zipBuf = zipFile.Buffer();
 
         utils::RdBuf_t eocdScanBuf = zipBuf.last(
-                                std::min(zip::EOCDRec::MaxBytes(), zipBuf.size())
-                            );
+            std::min(zip::EOCDRec::MaxBytes(), zipBuf.size())
+        );
 
         int e = 0;
         ForEachFindEnd(
-                eocdScanBuf,
-                zip::EOCDRec::SIG,
-                [&e, zipBuf](utils::RdBuf_t match)
+            eocdScanBuf,
+            zip::EOCDRec::SIG,
+            [&e, zipBuf](utils::RdBuf_t match)
+            {
+                auto eocd = zip::EOCDRec::read(match);
+                if (!eocd || !Validate(*eocd, zipBuf.size()))
                 {
-                    auto eocd = zip::EOCDRec::read(match);
-                    if (!eocd || !Validate(*eocd, zipBuf.size()))
+                    std::cerr << "eocd is bogus (1)" << "\n";
+
+                    return true;
+                }
+
+                //
+                // std::cerr << "eocd: " << *eocd << "\n";
+                //
+
+                utils::RdBuf_t cdBuf = zipBuf.subspan(
+                    eocd->offsetOfCentralDir,
+                    std::min<size_t>(
+                        zip::CDFHeader::MaxBytes() * eocd->totalEntries,
+                        eocd->sizeOfCentralDir
+                    )
+                );
+
+                for (size_t fn = 0; fn < eocd->totalEntries; ++fn)
+                {
+                    auto [cdfh, remCdBuf] = zip::CDFHeader::read(cdBuf);
+                    if (!cdfh || !Validate(*cdfh, *eocd, zipBuf.size()))
                     {
-                        std::cerr << "eocd is bogus (1)" << "\n";
+                        std::cerr << "cdfh[" << fn << "] is bogus (1)" << "\n";
 
                         return true;
                     }
 
                     //
-                    // std::cerr << "eocd: " << *eocd << "\n";
+                    // std::cerr << "cdfh[" << fn << "]: " << *cdfh << "\n";
                     //
 
-                    utils::RdBuf_t cdBuf = zipBuf.subspan(
-                                        eocd->offsetOfCentralDir,
-                                        std::min<size_t>(
-                                            zip::CDFHeader::MaxBytes() * eocd->totalEntries,
-                                            eocd->sizeOfCentralDir
-                                        )
-                                    );
+                    utils::RdBuf_t lfBuf = zipBuf.subspan(
+                        cdfh->offsetOfLFHeader,
+                        std::min<size_t>(
+                            zip::LFHeader::MaxBytes(),
+                            eocd->offsetOfCentralDir
+                        )
+                    );
 
-                    for (size_t fn = 0; fn < eocd->totalEntries; ++fn)
+                    auto [lfh, dataBuf] = zip::LFHeader::read(lfBuf);
+                    if (!lfh || !Validate(*lfh, *cdfh, *eocd, zipBuf.size()))
                     {
-                        auto [cdfh, remCdBuf] = zip::CDFHeader::read(cdBuf);
-                        if (!cdfh || !Validate(*cdfh, *eocd, zipBuf.size()))
-                        {
-                            std::cerr << "cdfh[" << fn << "] is bogus (1)" << "\n";
+                        std::cerr << "lfh[" << fn << "] is bogus (1)" << "\n";
 
-                            return true;
-                        }
-
-                        //
-                        // std::cerr << "cdfh[" << fn << "]: " << *cdfh << "\n";
-                        //
-
-                        utils::RdBuf_t lfBuf = zipBuf.subspan(
-                                            cdfh->offsetOfLFHeader,
-                                            std::min<size_t>(
-                                                zip::LFHeader::MaxBytes(),
-                                                eocd->offsetOfCentralDir
-                                            )
-                                        );
-
-                        auto [lfh, dataBuf] = zip::LFHeader::read(lfBuf);
-                        if (!lfh || !Validate(*lfh, *cdfh, *eocd, zipBuf.size()))
-                        {
-                            std::cerr << "lfh[" << fn << "] is bogus (1)" << "\n";
-
-                            return true;
-                        }
-
-                        //
-                        // std::cerr << "lfh[" << fn << "]: " << *lfh << "\n";
-                        //
-
-                        utils::RdBuf_t fileBuf = dataBuf.first(lfh->compressedSz);
-
-                        //
-                        // Get to the contents of the file:
-                        //
-                        for (auto c : lfh->name)
-                            std::cout << c;
-                        std::cout << ":\n";
-                        std::cout << "-------------------------------------\n";
-                        zip::Inflate(
-                                fileBuf,
-                                [](char x) {
-                                    std::cout << x << std::flush;
-                                }
-                            );
-                        std::cout << "-------------------------------------\n";
-
-                        cdBuf = remCdBuf;
+                        return true;
                     }
 
-                    return false;
+                    //
+                    // std::cerr << "lfh[" << fn << "]: " << *lfh << "\n";
+                    //
+
+                    utils::RdBuf_t fileBuf = dataBuf.first(lfh->compressedSz);
+
+                    //
+                    // Get to the contents of the file:
+                    //
+                    for (auto c : lfh->name)
+                        std::cout << c;
+                    std::cout << ":\n";
+                    std::cout << "-------------------------------------\n";
+                    zip::Inflate(
+                        fileBuf,
+                        [](char x)
+                        {
+                            std::cout << x << std::flush;
+                        }
+                    );
+                    std::cout << "-------------------------------------\n";
+
+                    cdBuf = remCdBuf;
                 }
-            );
+
+                return false;
+            }
+        );
 
         if (e == -1)
         {

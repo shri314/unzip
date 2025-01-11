@@ -1,0 +1,44 @@
+---
+BasedOnStyle: Mozilla
+AlignAfterOpenBracket: BlockIndent
+AlignConsecutiveAssignments: 'true'
+AlignOperands: AlignAfterOperator
+BreakBeforeBinaryOperators: All
+BreakBeforeConceptDeclarations: Always
+BreakBeforeTernaryOperators: true
+#BreakBinaryOperations: OnePerLine
+BreakInheritanceList: AfterComma
+BreakTemplateDeclarations: Yes
+AllowAllArgumentsOnNextLine: 'true'
+AllowAllConstructorInitializersOnNextLine: 'true'
+AllowAllParametersOfDeclarationOnNextLine: 'true'
+AllowShortIfStatementsOnASingleLine: Never
+ExperimentalAutoDetectBinPacking: true
+BreakAfterReturnType: All
+BinPackArguments: 'false'
+BinPackParameters: 'false'
+BreakBeforeBraces: Allman
+ColumnLimit: 0
+AlignTrailingComments: true
+AlignArrayOfStructures: Right
+AlignConsecutiveShortCaseStatements:
+  Enabled: true
+CompactNamespaces: 'true'
+IndentWidth: '4'
+ContinuationIndentWidth: '4'
+AccessModifierOffset: -4
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterControlStatements: true
+EmptyLineBeforeAccessModifier: Always
+SeparateDefinitionBlocks: Always
+Standard: Latest
+UseTab: Never
+LambdaBodyIndentation: Signature
+KeepEmptyLines:
+  AtEndOfFile: false
+  AtStartOfBlock: false
+  AtStartOfFile: false
+SortIncludes: Never
+
+...

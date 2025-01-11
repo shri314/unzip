@@ -19,14 +19,14 @@ namespace msg::Impl
 template<auto MemPtrV>
 struct SizeSpecDef;
 
-template<class MemClassT, class MemT, MemT MemClassT::*MemPtrV>
+template<class MemClassT, class MemT, MemT MemClassT::* MemPtrV>
 struct SizeSpecDef<MemPtrV>
 {
     static_assert(
-            std::is_integral_v<MemT>
+        std::is_integral_v<MemT>
             && !std::is_same_v<std::remove_cv_t<MemT>, bool>,
-            "Pos<> or Dyn<> is required to be explicitly specified, can't be deduced for non-integral types"
-        );
+        "Pos<> or Dyn<> is required to be explicitly specified, can't be deduced for non-integral types"
+    );
 
     using Pos_t = Pos<0u, 8u * sizeof(MemT)>;
 };
@@ -49,7 +49,8 @@ struct Seg<MemPtrV, Pos<LSBitV, BitWidthV>>
 {
     using Pos_t = Pos<LSBitV, BitWidthV>;
 
-    static constexpr size_t MinBytes()
+    static constexpr size_t
+    MinBytes()
     {
         using UIntW_t = typename Pos_t::UIntW_t;
 
@@ -61,13 +62,15 @@ struct Seg<MemPtrV, Pos<LSBitV, BitWidthV>>
         return 0u;
     }
 
-    static constexpr size_t MaxBytes()
+    static constexpr size_t
+    MaxBytes()
     {
         return MinBytes();
     }
 
     template<class ClassT>
-    static constexpr std::optional<utils::RdBuf_t> read(utils::RdBuf_t Buf, ClassT& Cls)
+    static constexpr std::optional<utils::RdBuf_t>
+    read(utils::RdBuf_t Buf, ClassT& Cls)
     {
         using UIntW_t = typename Pos_t::UIntW_t;
 
@@ -92,7 +95,8 @@ struct Seg<MemPtrV, Pos<LSBitV, BitWidthV>>
     }
 
     template<class ClassT>
-    static constexpr std::optional<utils::WrBuf_t> write(utils::WrBuf_t Buf, const ClassT& Cls)
+    static constexpr std::optional<utils::WrBuf_t>
+    write(utils::WrBuf_t Buf, const ClassT& Cls)
     {
         using UIntW_t = typename Pos_t::UIntW_t;
 
@@ -120,24 +124,28 @@ struct Seg<MemPtrV, Pos<LSBitV, BitWidthV>>
 
 template<
     auto MemPtr1V,
-    auto MemPtr2V, size_t MinBytesV, size_t MaxBytesV
->
+    auto MemPtr2V,
+    size_t MinBytesV,
+    size_t MaxBytesV>
 struct Seg<MemPtr1V, Dyn<MemPtr2V, MinBytesV, MaxBytesV>>
 {
     using Pos_t = Pos<0u, 8u>;
 
-    static constexpr size_t MinBytes()
+    static constexpr size_t
+    MinBytes()
     {
         return MinBytesV;
     }
 
-    static constexpr size_t MaxBytes()
+    static constexpr size_t
+    MaxBytes()
     {
         return MaxBytesV;
     }
 
     template<class ClassT>
-    static constexpr std::optional<utils::RdBuf_t> read(utils::RdBuf_t Buf, ClassT& Cls)
+    static constexpr std::optional<utils::RdBuf_t>
+    read(utils::RdBuf_t Buf, ClassT& Cls)
     {
         size_t BytesRequested = Cls.*MemPtr2V;
 
@@ -145,7 +153,7 @@ struct Seg<MemPtr1V, Dyn<MemPtr2V, MinBytesV, MaxBytesV>>
             && BytesRequested <= MaxBytesV
             && BytesRequested <= Buf.size())
         {
-            Cls.*MemPtr1V = {Buf.data(), Buf.data() + BytesRequested};
+            Cls.*MemPtr1V = { Buf.data(), Buf.data() + BytesRequested };
 
             return Buf.subspan(BytesRequested);
         }
@@ -154,15 +162,14 @@ struct Seg<MemPtr1V, Dyn<MemPtr2V, MinBytesV, MaxBytesV>>
     }
 
     template<class ClassT>
-    static constexpr std::optional<utils::WrBuf_t> write(utils::WrBuf_t Buf, const ClassT& Cls)
+    static constexpr std::optional<utils::WrBuf_t>
+    write(utils::WrBuf_t Buf, const ClassT& Cls)
     {
         size_t BytesRequested = Cls.*MemPtr2V;
 
         const auto& src = Cls.*MemPtr1V;
 
-        if (MinBytesV <= Buf.size() && Buf.size() <= MaxBytesV &&
-            MinBytesV <= BytesRequested && BytesRequested <= MaxBytesV &&
-            BytesRequested == std::size(src))
+        if (MinBytesV <= Buf.size() && Buf.size() <= MaxBytesV && MinBytesV <= BytesRequested && BytesRequested <= MaxBytesV && BytesRequested == std::size(src))
         {
             std::memcpy(Buf.data(), std::data(src), BytesRequested);
 

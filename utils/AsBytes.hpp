@@ -4,18 +4,19 @@
 #include <array>
 
 template<class T, class ByteT>
-constexpr auto AsBytes(T x)
+constexpr auto
+AsBytes(T x)
 {
     static_assert(
-            std::is_integral_v<T>,
-            "T requires to be an integral"
-        );
+        std::is_integral_v<T>,
+        "T requires to be an integral"
+    );
     static_assert(
-            std::is_integral_v<ByteT>
+        std::is_integral_v<ByteT>
             && !std::is_same_v<std::remove_cv_t<ByteT>, bool>
             && sizeof(ByteT) == 1u,
-            "ByteT requires to be suitable to represent a byte"
-        );
+        "ByteT requires to be suitable to represent a byte"
+    );
 
     using U = std::make_unsigned_t<T>;
 

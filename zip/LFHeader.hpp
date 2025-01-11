@@ -48,10 +48,10 @@ struct LFHeader
         msg::Seg<&LFHeader::nameLen>,
         msg::Seg<&LFHeader::exFieldLen>,
         msg::Seg<&LFHeader::name, msg::Dyn<&LFHeader::nameLen>>,
-        msg::Seg<&LFHeader::exField, msg::Dyn<&LFHeader::exFieldLen>>
-    >;
+        msg::Seg<&LFHeader::exField, msg::Dyn<&LFHeader::exFieldLen>>>;
 
-    friend bool operator==(const LFHeader& l, const LFHeader& r)
+    friend bool
+    operator==(const LFHeader& l, const LFHeader& r)
     {
         return l.sig == r.sig
             && l.verNeeded == r.verNeeded
@@ -65,20 +65,20 @@ struct LFHeader
             && l.nameLen == r.nameLen
             && l.exFieldLen == r.exFieldLen
             && l.name == r.name
-            && l.exField == r.exField
-            ;
+            && l.exField == r.exField;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const LFHeader& r)
+    friend std::ostream&
+    operator<<(std::ostream& os, const LFHeader& r)
     {
         return os
-            << "{ " << "sig:" << utils::Hexed{r.sig, "0x", 8}
+            << "{ " << "sig:" << utils::Hexed{ r.sig, "0x", 8 }
             << ", " << "verNeeded:" << r.verNeeded
             << ", " << "flags:" << r.flags
             << ", " << "compression:" << r.compression
             << ", " << "lastModTime:" << r.lastModTime
             << ", " << "lastModDate:" << r.lastModDate
-            << ", " << "crc32:" << utils::Hexed{r.crc32, "0x"}
+            << ", " << "crc32:" << utils::Hexed{ r.crc32, "0x" }
             << ", " << "compressedSz:" << r.compressedSz
             << ", " << "originalSz:" << r.originalSz
             << ", " << "name:" << std::quoted(utils::AsPlainStringView(r.name))
@@ -86,17 +86,20 @@ struct LFHeader
             << " }";
     }
 
-    static size_t MinBytes()
+    static size_t
+    MinBytes()
     {
         return Format::MinBytes();
     }
 
-    static size_t MaxBytes()
+    static size_t
+    MaxBytes()
     {
         return Format::MaxBytes();
     }
 
-    static std::pair<std::optional<LFHeader>,utils::RdBuf_t> read(utils::RdBuf_t Buf)
+    static std::pair<std::optional<LFHeader>, utils::RdBuf_t>
+    read(utils::RdBuf_t Buf)
     {
         std::optional<LFHeader> h = LFHeader{};
 
@@ -107,7 +110,7 @@ struct LFHeader
             h.reset();
         }
 
-        return {h, *b};
+        return { h, *b };
     }
 };
 

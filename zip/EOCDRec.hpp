@@ -39,10 +39,10 @@ struct EOCDRec
         msg::Seg<&EOCDRec::sizeOfCentralDir>,
         msg::Seg<&EOCDRec::offsetOfCentralDir>,
         msg::Seg<&EOCDRec::commentLen>,
-        msg::Seg<&EOCDRec::comment, msg::Dyn<&EOCDRec::commentLen>>
-    >;
+        msg::Seg<&EOCDRec::comment, msg::Dyn<&EOCDRec::commentLen>>>;
 
-    friend bool operator==(const EOCDRec& l, const EOCDRec& r)
+    friend bool
+    operator==(const EOCDRec& l, const EOCDRec& r)
     {
         return l.sig == r.sig
             && l.thisDiskNum == r.thisDiskNum
@@ -55,10 +55,11 @@ struct EOCDRec
             && l.comment == r.comment;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const EOCDRec& r)
+    friend std::ostream&
+    operator<<(std::ostream& os, const EOCDRec& r)
     {
         return os
-            << "{ " << "sig:" << utils::Hexed{r.sig, "0x", 8}
+            << "{ " << "sig:" << utils::Hexed{ r.sig, "0x", 8 }
             << ", " << "thisDiskNum:" << r.thisDiskNum
             << ", " << "startDiskNum:" << r.startDiskNum
             << ", " << "totalEntriesThisDisk:" << r.totalEntriesThisDisk
@@ -69,17 +70,20 @@ struct EOCDRec
             << " }";
     }
 
-    static size_t MinBytes()
+    static size_t
+    MinBytes()
     {
         return Format::MinBytes();
     }
 
-    static size_t MaxBytes()
+    static size_t
+    MaxBytes()
     {
         return Format::MaxBytes();
     }
 
-    static std::optional<EOCDRec> read(utils::RdBuf_t Buf)
+    static std::optional<EOCDRec>
+    read(utils::RdBuf_t Buf)
     {
         std::optional<EOCDRec> h = EOCDRec{};
 

@@ -60,11 +60,11 @@ struct CDFHeader
         msg::Seg<&CDFHeader::attrExternal>,
         msg::Seg<&CDFHeader::offsetOfLFHeader>,
         msg::Seg<&CDFHeader::name, msg::Dyn<&CDFHeader::nameLen>>,
-        msg::Seg<&CDFHeader::exField,  msg::Dyn<&CDFHeader::exFieldLen>>,
-        msg::Seg<&CDFHeader::comment,  msg::Dyn<&CDFHeader::commentLen>>
-    >;
+        msg::Seg<&CDFHeader::exField, msg::Dyn<&CDFHeader::exFieldLen>>,
+        msg::Seg<&CDFHeader::comment, msg::Dyn<&CDFHeader::commentLen>>>;
 
-    friend bool operator==(const CDFHeader& l, const CDFHeader& r)
+    friend bool
+    operator==(const CDFHeader& l, const CDFHeader& r)
     {
         return l.sig == r.sig
             && l.verMadeBy == r.verMadeBy
@@ -88,17 +88,18 @@ struct CDFHeader
             && l.comment == r.comment;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const CDFHeader& r)
+    friend std::ostream&
+    operator<<(std::ostream& os, const CDFHeader& r)
     {
         return os
-            << "{ " << "sig:" << utils::Hexed{r.sig, "0x", 8}
+            << "{ " << "sig:" << utils::Hexed{ r.sig, "0x", 8 }
             << ", " << "verMadeBy:" << r.verMadeBy
             << ", " << "verNeeded:" << r.verNeeded
             << ", " << "flags:" << r.flags
             << ", " << "compression:" << r.compression
             << ", " << "lastModTime:" << r.lastModTime
             << ", " << "lastModDate:" << r.lastModDate
-            << ", " << "crc32:" << utils::Hexed{r.crc32, "0x"}
+            << ", " << "crc32:" << utils::Hexed{ r.crc32, "0x" }
             << ", " << "compressedSz:" << r.compressedSz
             << ", " << "originalSz:" << r.originalSz
             << ", " << "diskNum:" << r.diskNum
@@ -111,17 +112,20 @@ struct CDFHeader
             << " }";
     }
 
-    static size_t MinBytes()
+    static size_t
+    MinBytes()
     {
         return Format::MinBytes();
     }
 
-    static size_t MaxBytes()
+    static size_t
+    MaxBytes()
     {
         return Format::MaxBytes();
     }
 
-    static std::pair<std::optional<CDFHeader>,utils::RdBuf_t> read(utils::RdBuf_t Buf)
+    static std::pair<std::optional<CDFHeader>, utils::RdBuf_t>
+    read(utils::RdBuf_t Buf)
     {
         std::optional<CDFHeader> h = CDFHeader{};
 
@@ -132,7 +136,7 @@ struct CDFHeader
             h.reset();
         }
 
-        return {h, *b};
+        return { h, *b };
     }
 };
 
