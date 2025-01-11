@@ -1,0 +1,287 @@
+
+0000 LOCAL HEADER #1       04034B50 (67324752)
+0004 Extract Zip Spec      14 (20) '2.0'
+0005 Extract OS            00 (0) 'MS-DOS'
+0006 General Purpose Flag  0000 (0)
+0008 Compression Method    0000 (0) 'Stored'
+000A Modification Time     599388A8 (1502841000) 'Thu Dec 19 22:35:16 2024'
+000E CRC                   00000000 (0)
+0012 Compressed Size       00000000 (0)
+0016 Uncompressed Size     00000000 (0)
+001A Filename Length       0004 (4)
+001C Extra Length          0000 (0)
+001E Filename              'ZZZ/'
+
+0022 LOCAL HEADER #2       04034B50 (67324752)
+0026 Extract Zip Spec      14 (20) '2.0'
+0027 Extract OS            00 (0) 'MS-DOS'
+0028 General Purpose Flag  0000 (0)
+     [Bits 1-2]            0 'Normal Compression'
+002A Compression Method    0008 (8) 'Deflated'
+002C Modification Time     59938438 (1502839864) 'Thu Dec 19 22:03:48 2024'
+0030 CRC                   E88153A7 (3900789671)
+0034 Compressed Size       00000015 (21)
+0038 Uncompressed Size     00000015 (21)
+003C Filename Length       0009 (9)
+003E Extra Length          0014 (20)
+0040 Filename              'ZZZ/B.txt'
+0049 Extra ID #1           0001 (1) 'ZIP64'
+004B   Length              0010 (16)
+004D   Uncompressed Size   0000000000000015 (21)
+0055   Compressed Size     0000000000000015 (21)
+005D PAYLOAD               ...,V..D.'........T..
+
+0072 LOCAL HEADER #3       04034B50 (67324752)
+0076 Extract Zip Spec      14 (20) '2.0'
+0077 Extract OS            00 (0) 'MS-DOS'
+0078 General Purpose Flag  0000 (0)
+     [Bits 1-2]            0 'Normal Compression'
+007A Compression Method    0008 (8) 'Deflated'
+007C Modification Time     59938429 (1502839849) 'Thu Dec 19 22:03:18 2024'
+0080 CRC                   36A09B4E (916495182)
+0084 Compressed Size       0000001D (29)
+0088 Uncompressed Size     0000001D (29)
+008C Filename Length       0009 (9)
+008E Extra Length          0014 (20)
+0090 Filename              'ZZZ/A.cpp'
+0099 Extra ID #1           0001 (1) 'ZIP64'
+009B   Length              0010 (16)
+009D   Uncompressed Size   000000000000001D (29)
+00A5   Compressed Size     000000000000001D (29)
+00AD PAYLOAD               ..+Q.M.......R.......<.Ck.Z..
+
+00CA LOCAL HEADER #4       04034B50 (67324752)
+00CE Extract Zip Spec      14 (20) '2.0'
+00CF Extract OS            00 (0) 'MS-DOS'
+00D0 General Purpose Flag  0000 (0)
+00D2 Compression Method    0000 (0) 'Stored'
+00D4 Modification Time     599388B1 (1502841009) 'Thu Dec 19 22:35:34 2024'
+00D8 CRC                   00000000 (0)
+00DC Compressed Size       00000000 (0)
+00E0 Uncompressed Size     00000000 (0)
+00E4 Filename Length       0007 (7)
+00E6 Extra Length          0000 (0)
+00E8 Filename              'ZZZ/ll/'
+
+00EF LOCAL HEADER #5       04034B50 (67324752)
+00F3 Extract Zip Spec      14 (20) '2.0'
+00F4 Extract OS            00 (0) 'MS-DOS'
+00F5 General Purpose Flag  0000 (0)
+     [Bits 1-2]            0 'Normal Compression'
+00F7 Compression Method    0008 (8) 'Deflated'
+00F9 Modification Time     599388B1 (1502841009) 'Thu Dec 19 22:35:34 2024'
+00FD CRC                   A897FC34 (2828532788)
+0101 Compressed Size       0000000F (15)
+0105 Uncompressed Size     0000000F (15)
+0109 Filename Length       000D (13)
+010B Extra Length          0014 (20)
+010D Filename              'ZZZ/ll/aa.txt'
+011A Extra ID #1           0001 (1) 'ZIP64'
+011C   Length              0010 (16)
+011E   Uncompressed Size   000000000000000F (15)
+0126   Compressed Size     000000000000000F (15)
+012E PAYLOAD               ...,V...D......
+
+013D CENTRAL HEADER #1     02014B50 (33639248)
+0141 Created Zip Spec      2D (45) '4.5'
+0142 Created OS            03 (3) 'Unix'
+0143 Extract Zip Spec      2D (45) '4.5'
+0144 Extract OS            00 (0) 'MS-DOS'
+0145 General Purpose Flag  0000 (0)
+0147 Compression Method    0000 (0) 'Stored'
+0149 Modification Time     599388A8 (1502841000) 'Thu Dec 19 22:35:16 2024'
+014D CRC                   00000000 (0)
+0151 Compressed Size       FFFFFFFF (4294967295)
+0155 Uncompressed Size     FFFFFFFF (4294967295)
+0159 Filename Length       0004 (4)
+015B Extra Length          001C (28)
+015D Comment Length        0000 (0)
+015F Disk Start            0000 (0)
+0161 Int File Attributes   0000 (0)
+     [Bit 0]               0 'Binary Data'
+0163 Ext File Attributes   41FD0010 (1107099664)
+     [Bit 4]               Directory
+     [Bits 16-24]          01FD (509) 'Unix attrib: rwxrwxr-x'
+     [Bits 28-31]          04 (4) 'Directory'
+0167 Local Header Offset   FFFFFFFF (4294967295)
+016B Filename              'ZZZ/'
+016F Extra ID #1           0001 (1) 'ZIP64'
+0171   Length              0018 (24)
+0173   Uncompressed Size   0000000000000000 (0)
+017B   Compressed Size     0000000000000000 (0)
+0183   Offset to Local Dir 0000000000000000 (0)
+
+018B CENTRAL HEADER #2     02014B50 (33639248)
+018F Created Zip Spec      2D (45) '4.5'
+0190 Created OS            03 (3) 'Unix'
+0191 Extract Zip Spec      2D (45) '4.5'
+0192 Extract OS            00 (0) 'MS-DOS'
+0193 General Purpose Flag  0000 (0)
+     [Bits 1-2]            0 'Normal Compression'
+0195 Compression Method    0008 (8) 'Deflated'
+0197 Modification Time     59938438 (1502839864) 'Thu Dec 19 22:03:48 2024'
+019B CRC                   E88153A7 (3900789671)
+019F Compressed Size       FFFFFFFF (4294967295)
+01A3 Uncompressed Size     FFFFFFFF (4294967295)
+01A7 Filename Length       0009 (9)
+01A9 Extra Length          001C (28)
+01AB Comment Length        0000 (0)
+01AD Disk Start            0000 (0)
+01AF Int File Attributes   0000 (0)
+     [Bit 0]               0 'Binary Data'
+01B1 Ext File Attributes   81B40000 (2176057344)
+     [Bits 16-24]          01B4 (436) 'Unix attrib: rw-rw-r--'
+     [Bits 28-31]          08 (8) 'Regular File'
+01B5 Local Header Offset   FFFFFFFF (4294967295)
+01B9 Filename              'ZZZ/B.txt'
+01C2 Extra ID #1           0001 (1) 'ZIP64'
+01C4   Length              0018 (24)
+01C6   Uncompressed Size   0000000000000015 (21)
+01CE   Compressed Size     0000000000000015 (21)
+01D6   Offset to Local Dir 0000000000000022 (34)
+
+01DE CENTRAL HEADER #3     02014B50 (33639248)
+01E2 Created Zip Spec      2D (45) '4.5'
+01E3 Created OS            03 (3) 'Unix'
+01E4 Extract Zip Spec      2D (45) '4.5'
+01E5 Extract OS            00 (0) 'MS-DOS'
+01E6 General Purpose Flag  0000 (0)
+     [Bits 1-2]            0 'Normal Compression'
+01E8 Compression Method    0008 (8) 'Deflated'
+01EA Modification Time     59938429 (1502839849) 'Thu Dec 19 22:03:18 2024'
+01EE CRC                   36A09B4E (916495182)
+01F2 Compressed Size       FFFFFFFF (4294967295)
+01F6 Uncompressed Size     FFFFFFFF (4294967295)
+01FA Filename Length       0009 (9)
+01FC Extra Length          001C (28)
+01FE Comment Length        0000 (0)
+0200 Disk Start            0000 (0)
+0202 Int File Attributes   0000 (0)
+     [Bit 0]               0 'Binary Data'
+0204 Ext File Attributes   81B40000 (2176057344)
+     [Bits 16-24]          01B4 (436) 'Unix attrib: rw-rw-r--'
+     [Bits 28-31]          08 (8) 'Regular File'
+0208 Local Header Offset   FFFFFFFF (4294967295)
+020C Filename              'ZZZ/A.cpp'
+0215 Extra ID #1           0001 (1) 'ZIP64'
+0217   Length              0018 (24)
+0219   Uncompressed Size   000000000000001D (29)
+0221   Compressed Size     000000000000001D (29)
+0229   Offset to Local Dir 0000000000000072 (114)
+
+0231 CENTRAL HEADER #4     02014B50 (33639248)
+0235 Created Zip Spec      2D (45) '4.5'
+0236 Created OS            03 (3) 'Unix'
+0237 Extract Zip Spec      2D (45) '4.5'
+0238 Extract OS            00 (0) 'MS-DOS'
+0239 General Purpose Flag  0000 (0)
+023B Compression Method    0000 (0) 'Stored'
+023D Modification Time     599388B1 (1502841009) 'Thu Dec 19 22:35:34 2024'
+0241 CRC                   00000000 (0)
+0245 Compressed Size       FFFFFFFF (4294967295)
+0249 Uncompressed Size     FFFFFFFF (4294967295)
+024D Filename Length       0007 (7)
+024F Extra Length          001C (28)
+0251 Comment Length        0000 (0)
+0253 Disk Start            0000 (0)
+0255 Int File Attributes   0000 (0)
+     [Bit 0]               0 'Binary Data'
+0257 Ext File Attributes   41FD0010 (1107099664)
+     [Bit 4]               Directory
+     [Bits 16-24]          01FD (509) 'Unix attrib: rwxrwxr-x'
+     [Bits 28-31]          04 (4) 'Directory'
+025B Local Header Offset   FFFFFFFF (4294967295)
+025F Filename              'ZZZ/ll/'
+0266 Extra ID #1           0001 (1) 'ZIP64'
+0268   Length              0018 (24)
+026A   Uncompressed Size   0000000000000000 (0)
+0272   Compressed Size     0000000000000000 (0)
+027A   Offset to Local Dir 00000000000000CA (202)
+
+0282 CENTRAL HEADER #5     02014B50 (33639248)
+0286 Created Zip Spec      2D (45) '4.5'
+0287 Created OS            03 (3) 'Unix'
+0288 Extract Zip Spec      2D (45) '4.5'
+0289 Extract OS            00 (0) 'MS-DOS'
+028A General Purpose Flag  0000 (0)
+     [Bits 1-2]            0 'Normal Compression'
+028C Compression Method    0008 (8) 'Deflated'
+028E Modification Time     599388B1 (1502841009) 'Thu Dec 19 22:35:34 2024'
+0292 CRC                   A897FC34 (2828532788)
+0296 Compressed Size       FFFFFFFF (4294967295)
+029A Uncompressed Size     FFFFFFFF (4294967295)
+029E Filename Length       000D (13)
+02A0 Extra Length          001C (28)
+02A2 Comment Length        0000 (0)
+02A4 Disk Start            0000 (0)
+02A6 Int File Attributes   0000 (0)
+     [Bit 0]               0 'Binary Data'
+02A8 Ext File Attributes   81B40000 (2176057344)
+     [Bits 16-24]          01B4 (436) 'Unix attrib: rw-rw-r--'
+     [Bits 28-31]          08 (8) 'Regular File'
+02AC Local Header Offset   FFFFFFFF (4294967295)
+02B0 Filename              'ZZZ/ll/aa.txt'
+02BD Extra ID #1           0001 (1) 'ZIP64'
+02BF   Length              0018 (24)
+02C1   Uncompressed Size   000000000000000F (15)
+02C9   Compressed Size     000000000000000F (15)
+02D1   Offset to Local Dir 00000000000000EF (239)
+
+02D9 UNEXPECTED PADDING    PK..,.......-.-.................................=.......PK..................
+#
+# INFO: Offset 0x2D9: 0x4C (76) Unexpected Padding bytes
+#
+
+0325 END CENTRAL HEADER    06054B50 (101010256)
+0329 Number of this disk   0000 (0)
+032B Central Dir Disk no   0000 (0)
+032D Entries in this disk  0005 (5)
+032F Total Entries         0005 (5)
+0331 Size of Central Dir   0000019C (412)
+0335 Offset to Central Dir 0000013D (317)
+0339 Comment Length        0000 (0)
+#
+# ERROR: Found 1 Field Mismatch for Filename 'ZZZ/'
+#
+#  ------------------------------------------------------------------------------------
+#  | Field Name       | Central Offset | Central Value | Local Offset | Local Value   | 
+#  ------------------------------------------------------------------------------------
+#  | Extract Zip Spec | 0x144 (324)    | 0x2D (45) 4.5 | 0x7 (7)      | 0x14 (20) 2.0 | 
+#  ------------------------------------------------------------------------------------
+#
+# ERROR: Found 1 Field Mismatch for Filename 'ZZZ/B.txt'
+#
+#  ------------------------------------------------------------------------------------
+#  | Field Name       | Central Offset | Central Value | Local Offset | Local Value   | 
+#  ------------------------------------------------------------------------------------
+#  | Extract Zip Spec | 0x192 (402)    | 0x2D (45) 4.5 | 0x29 (41)    | 0x14 (20) 2.0 | 
+#  ------------------------------------------------------------------------------------
+#
+# ERROR: Found 1 Field Mismatch for Filename 'ZZZ/A.cpp'
+#
+#  ------------------------------------------------------------------------------------
+#  | Field Name       | Central Offset | Central Value | Local Offset | Local Value   | 
+#  ------------------------------------------------------------------------------------
+#  | Extract Zip Spec | 0x1E5 (485)    | 0x2D (45) 4.5 | 0x79 (121)   | 0x14 (20) 2.0 | 
+#  ------------------------------------------------------------------------------------
+#
+# ERROR: Found 1 Field Mismatch for Filename 'ZZZ/ll/'
+#
+#  ------------------------------------------------------------------------------------
+#  | Field Name       | Central Offset | Central Value | Local Offset | Local Value   | 
+#  ------------------------------------------------------------------------------------
+#  | Extract Zip Spec | 0x238 (568)    | 0x2D (45) 4.5 | 0xD1 (209)   | 0x14 (20) 2.0 | 
+#  ------------------------------------------------------------------------------------
+#
+# ERROR: Found 1 Field Mismatch for Filename 'ZZZ/ll/aa.txt'
+#
+#  ------------------------------------------------------------------------------------
+#  | Field Name       | Central Offset | Central Value | Local Offset | Local Value   | 
+#  ------------------------------------------------------------------------------------
+#  | Extract Zip Spec | 0x289 (649)    | 0x2D (45) 4.5 | 0xF6 (246)   | 0x14 (20) 2.0 | 
+#  ------------------------------------------------------------------------------------
+#
+# Error Count: 5
+# Info Count: 1
+#
+# Done

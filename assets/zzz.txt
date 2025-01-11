@@ -1,0 +1,319 @@
+
+0000 LOCAL HEADER #1       04034B50 (67324752)
+0004 Extract Zip Spec      0A (10) '1.0'
+0005 Extract OS            00 (0) 'MS-DOS'
+0006 General Purpose Flag  0000 (0)
+0008 Compression Method    0000 (0) 'Stored'
+000A Modification Time     599388A9 (1502841001) 'Thu Dec 19 22:35:18 2024'
+000E CRC                   00000000 (0)
+0012 Compressed Size       00000000 (0)
+0016 Uncompressed Size     00000000 (0)
+001A Filename Length       0004 (4)
+001C Extra Length          001C (28)
+001E Filename              'ZZZ/'
+0022 Extra ID #1           5455 (21589) 'Extended Timestamp [UT]'
+0024   Length              0009 (9)
+0026   Flags               03 (3) 'Modification Access'
+0027   Modification Time   676404F5 (1734608117) 'Thu Dec 19 17:05:17 2024'
+002B   Access Time         676929DE (1734945246) 'Mon Dec 23 14:44:06 2024'
+002F Extra ID #2           7875 (30837) 'Unix Extra type 3 [ux]'
+0031   Length              000B (11)
+0033   Version             01 (1)
+0034   UID Size            04 (4)
+0035   UID                 000003E8 (1000)
+0039   GID Size            04 (4)
+003A   GID                 000003E8 (1000)
+
+003E LOCAL HEADER #2       04034B50 (67324752)
+0042 Extract Zip Spec      0A (10) '1.0'
+0043 Extract OS            00 (0) 'MS-DOS'
+0044 General Purpose Flag  0000 (0)
+0046 Compression Method    0000 (0) 'Stored'
+0048 Modification Time     59938438 (1502839864) 'Thu Dec 19 22:03:48 2024'
+004C CRC                   E88153A7 (3900789671)
+0050 Compressed Size       00000015 (21)
+0054 Uncompressed Size     00000015 (21)
+0058 Filename Length       0009 (9)
+005A Extra Length          001C (28)
+005C Filename              'ZZZ/B.txt'
+0065 Extra ID #1           5455 (21589) 'Extended Timestamp [UT]'
+0067   Length              0009 (9)
+0069   Flags               03 (3) 'Modification Access'
+006A   Modification Time   6763FD94 (1734606228) 'Thu Dec 19 16:33:48 2024'
+006E   Access Time         676929F7 (1734945271) 'Mon Dec 23 14:44:31 2024'
+0072 Extra ID #2           7875 (30837) 'Unix Extra type 3 [ux]'
+0074   Length              000B (11)
+0076   Version             01 (1)
+0077   UID Size            04 (4)
+0078   UID                 000003E8 (1000)
+007C   GID Size            04 (4)
+007D   GID                 000003E8 (1000)
+0081 PAYLOAD               This is a B.txt file.
+
+0096 LOCAL HEADER #3       04034B50 (67324752)
+009A Extract Zip Spec      0A (10) '1.0'
+009B Extract OS            00 (0) 'MS-DOS'
+009C General Purpose Flag  0000 (0)
+009E Compression Method    0000 (0) 'Stored'
+00A0 Modification Time     5993842A (1502839850) 'Thu Dec 19 22:03:20 2024'
+00A4 CRC                   36A09B4E (916495182)
+00A8 Compressed Size       0000001D (29)
+00AC Uncompressed Size     0000001D (29)
+00B0 Filename Length       0009 (9)
+00B2 Extra Length          001C (28)
+00B4 Filename              'ZZZ/A.cpp'
+00BD Extra ID #1           5455 (21589) 'Extended Timestamp [UT]'
+00BF   Length              0009 (9)
+00C1   Flags               03 (3) 'Modification Access'
+00C2   Modification Time   6763FD77 (1734606199) 'Thu Dec 19 16:33:19 2024'
+00C6   Access Time         676929F7 (1734945271) 'Mon Dec 23 14:44:31 2024'
+00CA Extra ID #2           7875 (30837) 'Unix Extra type 3 [ux]'
+00CC   Length              000B (11)
+00CE   Version             01 (1)
+00CF   UID Size            04 (4)
+00D0   UID                 000003E8 (1000)
+00D4   GID Size            04 (4)
+00D5   GID                 000003E8 (1000)
+00D9 PAYLOAD               int main().{.    return 1;.}.
+
+00F6 LOCAL HEADER #4       04034B50 (67324752)
+00FA Extract Zip Spec      0A (10) '1.0'
+00FB Extract OS            00 (0) 'MS-DOS'
+00FC General Purpose Flag  0000 (0)
+00FE Compression Method    0000 (0) 'Stored'
+0100 Modification Time     599388B1 (1502841009) 'Thu Dec 19 22:35:34 2024'
+0104 CRC                   00000000 (0)
+0108 Compressed Size       00000000 (0)
+010C Uncompressed Size     00000000 (0)
+0110 Filename Length       0007 (7)
+0112 Extra Length          001C (28)
+0114 Filename              'ZZZ/ll/'
+011B Extra ID #1           5455 (21589) 'Extended Timestamp [UT]'
+011D   Length              0009 (9)
+011F   Flags               03 (3) 'Modification Access'
+0120   Modification Time   67640506 (1734608134) 'Thu Dec 19 17:05:34 2024'
+0124   Access Time         676929DE (1734945246) 'Mon Dec 23 14:44:06 2024'
+0128 Extra ID #2           7875 (30837) 'Unix Extra type 3 [ux]'
+012A   Length              000B (11)
+012C   Version             01 (1)
+012D   UID Size            04 (4)
+012E   UID                 000003E8 (1000)
+0132   GID Size            04 (4)
+0133   GID                 000003E8 (1000)
+
+0137 LOCAL HEADER #5       04034B50 (67324752)
+013B Extract Zip Spec      0A (10) '1.0'
+013C Extract OS            00 (0) 'MS-DOS'
+013D General Purpose Flag  0000 (0)
+013F Compression Method    0000 (0) 'Stored'
+0141 Modification Time     599388B1 (1502841009) 'Thu Dec 19 22:35:34 2024'
+0145 CRC                   A897FC34 (2828532788)
+0149 Compressed Size       0000000F (15)
+014D Uncompressed Size     0000000F (15)
+0151 Filename Length       000D (13)
+0153 Extra Length          001C (28)
+0155 Filename              'ZZZ/ll/aa.txt'
+0162 Extra ID #1           5455 (21589) 'Extended Timestamp [UT]'
+0164   Length              0009 (9)
+0166   Flags               03 (3) 'Modification Access'
+0167   Modification Time   67640506 (1734608134) 'Thu Dec 19 17:05:34 2024'
+016B   Access Time         676929F7 (1734945271) 'Mon Dec 23 14:44:31 2024'
+016F Extra ID #2           7875 (30837) 'Unix Extra type 3 [ux]'
+0171   Length              000B (11)
+0173   Version             01 (1)
+0174   UID Size            04 (4)
+0175   UID                 000003E8 (1000)
+0179   GID Size            04 (4)
+017A   GID                 000003E8 (1000)
+017E PAYLOAD               This is aa.txt.
+
+018D CENTRAL HEADER #1     02014B50 (33639248)
+0191 Created Zip Spec      1E (30) '3.0'
+0192 Created OS            03 (3) 'Unix'
+0193 Extract Zip Spec      0A (10) '1.0'
+0194 Extract OS            00 (0) 'MS-DOS'
+0195 General Purpose Flag  0000 (0)
+0197 Compression Method    0000 (0) 'Stored'
+0199 Modification Time     599388A9 (1502841001) 'Thu Dec 19 22:35:18 2024'
+019D CRC                   00000000 (0)
+01A1 Compressed Size       00000000 (0)
+01A5 Uncompressed Size     00000000 (0)
+01A9 Filename Length       0004 (4)
+01AB Extra Length          0018 (24)
+01AD Comment Length        0000 (0)
+01AF Disk Start            0000 (0)
+01B1 Int File Attributes   0000 (0)
+     [Bit 0]               0 'Binary Data'
+01B3 Ext File Attributes   41FD0010 (1107099664)
+     [Bit 4]               Directory
+     [Bits 16-24]          01FD (509) 'Unix attrib: rwxrwxr-x'
+     [Bits 28-31]          04 (4) 'Directory'
+01B7 Local Header Offset   00000000 (0)
+01BB Filename              'ZZZ/'
+01BF Extra ID #1           5455 (21589) 'Extended Timestamp [UT]'
+01C1   Length              0005 (5)
+01C3   Flags               03 (3) 'Modification Access'
+01C4   Modification Time   676404F5 (1734608117) 'Thu Dec 19 17:05:17 2024'
+01C8 Extra ID #2           7875 (30837) 'Unix Extra type 3 [ux]'
+01CA   Length              000B (11)
+01CC   Version             01 (1)
+01CD   UID Size            04 (4)
+01CE   UID                 000003E8 (1000)
+01D2   GID Size            04 (4)
+01D3   GID                 000003E8 (1000)
+#
+# WARNING: Offset 0x193: 'Extract Zip Spec' is '1.0'. Need value >= '2.0' for Directory 'ZZZ/'
+#
+
+01D7 CENTRAL HEADER #2     02014B50 (33639248)
+01DB Created Zip Spec      1E (30) '3.0'
+01DC Created OS            03 (3) 'Unix'
+01DD Extract Zip Spec      0A (10) '1.0'
+01DE Extract OS            00 (0) 'MS-DOS'
+01DF General Purpose Flag  0000 (0)
+01E1 Compression Method    0000 (0) 'Stored'
+01E3 Modification Time     59938438 (1502839864) 'Thu Dec 19 22:03:48 2024'
+01E7 CRC                   E88153A7 (3900789671)
+01EB Compressed Size       00000015 (21)
+01EF Uncompressed Size     00000015 (21)
+01F3 Filename Length       0009 (9)
+01F5 Extra Length          0018 (24)
+01F7 Comment Length        0000 (0)
+01F9 Disk Start            0000 (0)
+01FB Int File Attributes   0001 (1)
+     [Bit 0]               1 'Text Data'
+01FD Ext File Attributes   81B40000 (2176057344)
+     [Bits 16-24]          01B4 (436) 'Unix attrib: rw-rw-r--'
+     [Bits 28-31]          08 (8) 'Regular File'
+0201 Local Header Offset   0000003E (62)
+0205 Filename              'ZZZ/B.txt'
+020E Extra ID #1           5455 (21589) 'Extended Timestamp [UT]'
+0210   Length              0005 (5)
+0212   Flags               03 (3) 'Modification Access'
+0213   Modification Time   6763FD94 (1734606228) 'Thu Dec 19 16:33:48 2024'
+0217 Extra ID #2           7875 (30837) 'Unix Extra type 3 [ux]'
+0219   Length              000B (11)
+021B   Version             01 (1)
+021C   UID Size            04 (4)
+021D   UID                 000003E8 (1000)
+0221   GID Size            04 (4)
+0222   GID                 000003E8 (1000)
+
+0226 CENTRAL HEADER #3     02014B50 (33639248)
+022A Created Zip Spec      1E (30) '3.0'
+022B Created OS            03 (3) 'Unix'
+022C Extract Zip Spec      0A (10) '1.0'
+022D Extract OS            00 (0) 'MS-DOS'
+022E General Purpose Flag  0000 (0)
+0230 Compression Method    0000 (0) 'Stored'
+0232 Modification Time     5993842A (1502839850) 'Thu Dec 19 22:03:20 2024'
+0236 CRC                   36A09B4E (916495182)
+023A Compressed Size       0000001D (29)
+023E Uncompressed Size     0000001D (29)
+0242 Filename Length       0009 (9)
+0244 Extra Length          0018 (24)
+0246 Comment Length        0000 (0)
+0248 Disk Start            0000 (0)
+024A Int File Attributes   0001 (1)
+     [Bit 0]               1 'Text Data'
+024C Ext File Attributes   81B40000 (2176057344)
+     [Bits 16-24]          01B4 (436) 'Unix attrib: rw-rw-r--'
+     [Bits 28-31]          08 (8) 'Regular File'
+0250 Local Header Offset   00000096 (150)
+0254 Filename              'ZZZ/A.cpp'
+025D Extra ID #1           5455 (21589) 'Extended Timestamp [UT]'
+025F   Length              0005 (5)
+0261   Flags               03 (3) 'Modification Access'
+0262   Modification Time   6763FD77 (1734606199) 'Thu Dec 19 16:33:19 2024'
+0266 Extra ID #2           7875 (30837) 'Unix Extra type 3 [ux]'
+0268   Length              000B (11)
+026A   Version             01 (1)
+026B   UID Size            04 (4)
+026C   UID                 000003E8 (1000)
+0270   GID Size            04 (4)
+0271   GID                 000003E8 (1000)
+
+0275 CENTRAL HEADER #4     02014B50 (33639248)
+0279 Created Zip Spec      1E (30) '3.0'
+027A Created OS            03 (3) 'Unix'
+027B Extract Zip Spec      0A (10) '1.0'
+027C Extract OS            00 (0) 'MS-DOS'
+027D General Purpose Flag  0000 (0)
+027F Compression Method    0000 (0) 'Stored'
+0281 Modification Time     599388B1 (1502841009) 'Thu Dec 19 22:35:34 2024'
+0285 CRC                   00000000 (0)
+0289 Compressed Size       00000000 (0)
+028D Uncompressed Size     00000000 (0)
+0291 Filename Length       0007 (7)
+0293 Extra Length          0018 (24)
+0295 Comment Length        0000 (0)
+0297 Disk Start            0000 (0)
+0299 Int File Attributes   0000 (0)
+     [Bit 0]               0 'Binary Data'
+029B Ext File Attributes   41FD0010 (1107099664)
+     [Bit 4]               Directory
+     [Bits 16-24]          01FD (509) 'Unix attrib: rwxrwxr-x'
+     [Bits 28-31]          04 (4) 'Directory'
+029F Local Header Offset   000000F6 (246)
+02A3 Filename              'ZZZ/ll/'
+02AA Extra ID #1           5455 (21589) 'Extended Timestamp [UT]'
+02AC   Length              0005 (5)
+02AE   Flags               03 (3) 'Modification Access'
+02AF   Modification Time   67640506 (1734608134) 'Thu Dec 19 17:05:34 2024'
+02B3 Extra ID #2           7875 (30837) 'Unix Extra type 3 [ux]'
+02B5   Length              000B (11)
+02B7   Version             01 (1)
+02B8   UID Size            04 (4)
+02B9   UID                 000003E8 (1000)
+02BD   GID Size            04 (4)
+02BE   GID                 000003E8 (1000)
+#
+# WARNING: Offset 0x27B: 'Extract Zip Spec' is '1.0'. Need value >= '2.0' for Directory 'ZZZ/ll/'
+#
+
+02C2 CENTRAL HEADER #5     02014B50 (33639248)
+02C6 Created Zip Spec      1E (30) '3.0'
+02C7 Created OS            03 (3) 'Unix'
+02C8 Extract Zip Spec      0A (10) '1.0'
+02C9 Extract OS            00 (0) 'MS-DOS'
+02CA General Purpose Flag  0000 (0)
+02CC Compression Method    0000 (0) 'Stored'
+02CE Modification Time     599388B1 (1502841009) 'Thu Dec 19 22:35:34 2024'
+02D2 CRC                   A897FC34 (2828532788)
+02D6 Compressed Size       0000000F (15)
+02DA Uncompressed Size     0000000F (15)
+02DE Filename Length       000D (13)
+02E0 Extra Length          0018 (24)
+02E2 Comment Length        0000 (0)
+02E4 Disk Start            0000 (0)
+02E6 Int File Attributes   0001 (1)
+     [Bit 0]               1 'Text Data'
+02E8 Ext File Attributes   81B40000 (2176057344)
+     [Bits 16-24]          01B4 (436) 'Unix attrib: rw-rw-r--'
+     [Bits 28-31]          08 (8) 'Regular File'
+02EC Local Header Offset   00000137 (311)
+02F0 Filename              'ZZZ/ll/aa.txt'
+02FD Extra ID #1           5455 (21589) 'Extended Timestamp [UT]'
+02FF   Length              0005 (5)
+0301   Flags               03 (3) 'Modification Access'
+0302   Modification Time   67640506 (1734608134) 'Thu Dec 19 17:05:34 2024'
+0306 Extra ID #2           7875 (30837) 'Unix Extra type 3 [ux]'
+0308   Length              000B (11)
+030A   Version             01 (1)
+030B   UID Size            04 (4)
+030C   UID                 000003E8 (1000)
+0310   GID Size            04 (4)
+0311   GID                 000003E8 (1000)
+
+0315 END CENTRAL HEADER    06054B50 (101010256)
+0319 Number of this disk   0000 (0)
+031B Central Dir Disk no   0000 (0)
+031D Entries in this disk  0005 (5)
+031F Total Entries         0005 (5)
+0321 Size of Central Dir   00000188 (392)
+0325 Offset to Central Dir 0000018D (397)
+0329 Comment Length        0000 (0)
+#
+# Warning Count: 2
+#
+# Done

@@ -1,0 +1,23 @@
+#pragma once
+
+#include "uintx.hpp"
+
+#include <cstddef>
+
+namespace msg
+{
+
+template<size_t LSBitV, size_t BitWidthV>
+struct Pos
+{
+    static_assert(BitWidthV > 0u && BitWidthV <= 64u);
+
+    static constexpr size_t LSBit_v = LSBitV;
+    static constexpr size_t MSBit_v = LSBitV + BitWidthV - 1u;
+    static constexpr size_t BitWidth_v = BitWidthV;
+
+    using IntW_t = decltype(UIntX<BitWidthV + LSBitV>());
+    using IntS_t = decltype(UIntX<BitWidthV>());
+};
+
+}
