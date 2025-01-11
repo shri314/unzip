@@ -89,17 +89,28 @@ struct LFHeader
             << " }";
     }
 
-    static std::optional<LFHeader> read(RdBuf_t Buf)
+    static size_t MinBytes()
+    {
+        return Format::MinBytes();
+    }
+
+    static size_t MaxBytes()
+    {
+        return Format::MaxBytes();
+    }
+
+    static std::pair<std::optional<LFHeader>,RdBuf_t> read(RdBuf_t Buf)
     {
         std::optional<LFHeader> h = LFHeader{};
 
         auto b = Format::read(Buf, *h);
         if (!b)
         {
+            b = Buf;
             h.reset();
         }
 
-        return h;
+        return {h, *b};
     }
 };
 

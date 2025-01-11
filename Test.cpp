@@ -8,6 +8,7 @@
 #include <cassert>
 #include <iostream>
 
+constexpr
 bool Validate(const zip::EOCDRec& r, size_t zipFileSize)
 {
     return
@@ -18,21 +19,36 @@ bool Validate(const zip::EOCDRec& r, size_t zipFileSize)
         && r.commentLen == r.comment.size()
         && r.offsetOfCentralDir < zipFileSize
         && r.sizeOfCentralDir <= zipFileSize - r.offsetOfCentralDir
-        && r.sizeOfCentralDir <= r.totalEntries * zip::CDFHeader::MaxBytes();
+        && r.sizeOfCentralDir <= r.totalEntries * zip::CDFHeader::MaxBytes()
+        && r.sizeOfCentralDir >= r.totalEntries * zip::CDFHeader::MinBytes();
 }
 
 
+constexpr
 bool Validate(const zip::CDFHeader& r, const zip::EOCDRec& eocd, size_t zipFileSize)
 {
     return
         AsBytes<uint32_t, unsigned char>(r.sig) == zip::CDFHeader::SIG
+        && r.diskNum == 0u
         && r.nameLen == r.name.size()
         && r.exFieldLen == r.exField.size()
         && r.commentLen == r.comment.size()
-        && r.diskNum == 0u
         && r.offsetOfLFHeader < zipFileSize
         && r.offsetOfLFHeader < eocd.offsetOfCentralDir
-        && eocd.offsetOfCentralDir - r.offsetOfLFHeader >= zip::CDFHeader::MinBytes();
+        && eocd.offsetOfCentralDir - r.offsetOfLFHeader >= zip::LFHeader::MinBytes();
+}
+
+
+constexpr
+bool Validate(const zip::LFHeader& r, const zip::CDFHeader& cdfh, const zip::EOCDRec& eocd, size_t zipFileSize)
+{
+    return
+        AsBytes<uint32_t, unsigned char>(r.sig) == zip::LFHeader::SIG
+        && r.nameLen == r.name.size()
+        && r.exFieldLen == r.exField.size()
+        && r.compressedSz < zipFileSize
+        && r.compressedSz < eocd.offsetOfCentralDir
+        ;
 }
 
 
@@ -86,7 +102,7 @@ int main(int argc, const char* argv[])
 
                     for (size_t fn = 0; fn < eocd->totalEntries; ++fn)
                     {
-                        auto [cdfh, remBuf] = zip::CDFHeader::read(cdBuf);
+                        auto [cdfh, remCdBuf] = zip::CDFHeader::read(cdBuf);
                         if (!cdfh || !Validate(*cdfh, *eocd, zipBuf.size()))
                         {
                             std::cout << "cdfh[" << fn << "] is bogus (1)" << "\n";
@@ -96,7 +112,29 @@ int main(int argc, const char* argv[])
 
                         std::cout << "cdfh[" << fn << "]: " << *cdfh << "\n";
 
-                        cdBuf = remBuf;
+                        RdBuf_t lfBuf = zipBuf.subspan(
+                                            cdfh->offsetOfLFHeader,
+                                            std::min<size_t>(
+                                                zip::LFHeader::MaxBytes(),
+                                                eocd->offsetOfCentralDir
+                                            )
+                                        );
+
+                        auto [lfh, dataBuf] = zip::LFHeader::read(lfBuf);
+                        if (!lfh || !Validate(*lfh, *cdfh, *eocd, zipBuf.size()))
+                        {
+                            std::cout << "lfh[" << fn << "] is bogus (1)" << "\n";
+
+                            return true;
+                        }
+
+                        std::cout << "lfh[" << fn << "]: " << *lfh << "\n";
+
+                        RdBuf_t fileBuf = dataBuf.first(lfh->compressedSz);
+
+                        std::cout << "X = " << fileBuf.size() << "\n";
+
+                        cdBuf = remCdBuf;
                     }
 
                     return false;
