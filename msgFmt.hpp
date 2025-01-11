@@ -12,9 +12,24 @@ struct Fmt
     static constexpr size_t FirstLSBit_v = SegT::Pos_t::LSBit_v;
     static constexpr size_t FirstMSBit_v = SegT::Pos_t::MSBit_v;
 
-    template<class ClassT>
-    static constexpr std::pair<const char*, bool> read(const char* Beg, const char* End, ClassT& Cls)
+    static constexpr size_t MinBytes()
     {
+        return ( SegT::MinBytes() + ... + SegTs::MinBytes() );
+    }
+
+    static constexpr size_t MaxBytes()
+    {
+        return ( SegT::MaxBytes() + ... + SegTs::MaxBytes() );
+    }
+
+    template<class ClassT>
+    static constexpr std::pair<const unsigned char*, bool> read(const unsigned char* Beg, const unsigned char* End, ClassT& Cls)
+    {
+        if (End - Beg < MinBytes())
+        {
+            return {Beg, false};
+        }
+
         auto ret = SegT::read(Beg, End, Cls);
 
         if constexpr (sizeof...(SegTs) > 0u)
@@ -31,8 +46,13 @@ struct Fmt
     }
 
     template<class ClassT>
-    static constexpr std::pair<char*, bool> write(char* Beg, const char* End, const ClassT& Cls)
+    static constexpr std::pair<unsigned char*, bool> write(unsigned char* Beg, const unsigned char* End, const ClassT& Cls)
     {
+        if (End - Beg < MinBytes())
+        {
+            return {Beg, false};
+        }
+
         auto ret = SegT::write(Beg, End, Cls);
 
         if constexpr (sizeof...(SegTs) > 0u)

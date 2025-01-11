@@ -19,7 +19,7 @@ struct DnsHeader
     bool ra;
 
     using Format = msg::Fmt<
-        msg::Seg<&DnsHeader::id,      msg::Pos<0u, 16u>>,
+        msg::Seg<&DnsHeader::id>,
         // --
         msg::Seg<&DnsHeader::qr,      msg::Pos<0u, 1u>>,
         msg::Seg<&DnsHeader::opcode,  msg::Pos<1u, 4u>>,
@@ -45,12 +45,11 @@ struct DnsHeader
             l.ra == r.ra;
     }
 
-    template<size_t N>
-    static constexpr std::optional<DnsHeader> read_new(const char (&Buf)[N])
+    static constexpr std::optional<DnsHeader> read_new(const unsigned char* Beg, const unsigned char* End)
     {
         std::optional<DnsHeader> h = DnsHeader{};
 
-        auto [_, s] = Format::read(&Buf[0], &Buf[N], *h);
+        auto [_, s] = Format::read(Beg, End, *h);
         if (!s)
         {
             h.reset();
@@ -59,12 +58,11 @@ struct DnsHeader
         return h;
     }
 
-    template<size_t N>
-    static constexpr std::optional<DnsHeader> read_old(const char (&Buf)[N])
+    static constexpr std::optional<DnsHeader> read_old(const unsigned char* Beg, const unsigned char* End)
     {
         std::optional<DnsHeader> h = DnsHeader{};
 
-        if (N < 4)
+        if (End - Beg < 4)
         {
             h.reset();
             return h;
@@ -72,49 +70,52 @@ struct DnsHeader
 
         {
             uint16_t x{};
-            memcpy(&x, &Buf[0], sizeof(x));
+            memcpy(&x, Beg, sizeof(x));
             h->id = (x >> 0) & 0xFFFF;
         }
+        Beg += 2;
         {
             uint8_t x{};
-            memcpy(&x, &Buf[2], sizeof(x));
+            memcpy(&x, Beg, sizeof(x));
             h->qr = (x >> 0) & 0x01;
         }
         {
             uint8_t x{};
-            memcpy(&x, &Buf[2], sizeof(x));
+            memcpy(&x, Beg, sizeof(x));
             h->opcode = ( x >> 1 ) & 0x0F;
         }
         {
             uint8_t x{};
-            memcpy(&x, &Buf[2], sizeof(x));
+            memcpy(&x, Beg, sizeof(x));
             h->aa = ( x >> 5 ) & 0x01;
         }
         {
             uint8_t x{};
-            memcpy(&x, &Buf[2], sizeof(x));
+            memcpy(&x, Beg, sizeof(x));
             h->tc = ( x >> 6 ) & 0x01;
         }
         {
             uint8_t x{};
-            memcpy(&x, &Buf[2], sizeof(x));
+            memcpy(&x, Beg, sizeof(x));
             h->rd = ( x >> 7 ) & 0x01;
         }
+        Beg += 1;
         {
             uint8_t x{};
-            memcpy(&x, &Buf[3], sizeof(x));
+            memcpy(&x, Beg, sizeof(x));
             h->ra = ( x >> 0 ) & 0x01;
         }
         // {
         //     uint8_t x{};
-        //     memcpy(&x, &Buf[3], sizeof(x));
+        //     memcpy(&x, Beg, sizeof(x));
         //     h->z = ( x >> 1 ) & 0x07;
         // }
         {
             uint8_t x{};
-            memcpy(&x, &Buf[3], sizeof(x));
+            memcpy(&x, Beg, sizeof(x));
             h->rcode = ( x >> 4 ) & 0x0F;
         }
+        Beg += 1;
 
         return h;
     }
