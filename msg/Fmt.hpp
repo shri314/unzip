@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Span.hpp"
+#include "utils/RdBuf.hpp"
 
 #include <optional>
 #include <utility>
@@ -14,8 +14,6 @@ struct Fmt
 {
     static constexpr size_t FirstLSBit_v = SegT::Pos_t::LSBit_v;
     static constexpr size_t FirstMSBit_v = SegT::Pos_t::MSBit_v;
-    using RdBuf_t = Span<const unsigned char>;
-    using WrBuf_t = Span<unsigned char>;
 
     static constexpr size_t MinBytes()
     {
@@ -28,7 +26,7 @@ struct Fmt
     }
 
     template<class ClassT>
-    static constexpr std::optional<RdBuf_t> read(RdBuf_t Buf, ClassT& Cls)
+    static constexpr std::optional<utils::RdBuf_t> read(utils::RdBuf_t Buf, ClassT& Cls)
     {
         if (Buf.size() < MinBytes())
         {
@@ -51,7 +49,7 @@ struct Fmt
     }
 
     template<class ClassT>
-    static constexpr std::optional<WrBuf_t> write(WrBuf_t Buf, const ClassT& Cls)
+    static constexpr std::optional<utils::WrBuf_t> write(utils::WrBuf_t Buf, const ClassT& Cls)
     {
         if (Buf.size() < MinBytes())
         {

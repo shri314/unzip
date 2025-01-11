@@ -2,6 +2,9 @@
 
 #include <algorithm>
 
+namespace utils
+{
+
 template<class Range1, class Range2, class F>
 constexpr
 void
@@ -32,4 +35,6 @@ ForEachFindEnd (
 
         cend = pos;
     }
+}
+
 }

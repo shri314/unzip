@@ -1,5 +1,5 @@
-#include "MemoryMappedFile.hpp"
-#include "ScopeExit.hpp"
+#include "utils/MemoryMappedFile.hpp"
+#include "utils/ScopeExit.hpp"
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -7,6 +7,9 @@
 #include <unistd.h>
 
 #include <cstring>
+
+namespace utils
+{
 
 MemoryMappedFile::MemoryMappedFile (
     const char* Fname
@@ -63,4 +66,6 @@ MemoryMappedFile::Error (
     ) const
 {
     return {m_Err, m_ErrCtx};
+}
+
 }

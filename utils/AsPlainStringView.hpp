@@ -1,7 +1,12 @@
 #pragma once
 
+#include "utils/Span.hpp"
+
 #include <string_view>
 #include <type_traits>
+
+namespace utils
+{
 
 template<class T>
 const
@@ -27,4 +32,6 @@ AsPlainStringView (
         reinterpret_cast<PlainT*>(const_cast<std::remove_cv_t<T>*>(Buf.data())),
         Buf.size()
     };
+}
+
 }

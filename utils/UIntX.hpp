@@ -2,6 +2,10 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <type_traits> // only for tests
+
+namespace utils
+{
 
 template<size_t width_bits>
 constexpr auto UIntX()
@@ -28,9 +32,7 @@ constexpr auto UIntX()
 
 //////////////////////////////////////////////////////
 
-#include <type_traits>
-
-inline void test_uintx()
+inline void test_UIntX()
 {
     static_assert(std::is_same_v<decltype(UIntX<1u>()), uint8_t>);
     static_assert(std::is_same_v<decltype(UIntX<8u>()), uint8_t>);
@@ -40,4 +42,6 @@ inline void test_uintx()
     static_assert(std::is_same_v<decltype(UIntX<32u>()), uint32_t>);
     static_assert(std::is_same_v<decltype(UIntX<33u>()), uint64_t>);
     static_assert(std::is_same_v<decltype(UIntX<64u>()), uint64_t>);
+}
+
 }

@@ -1,19 +1,17 @@
 #pragma once
 
-#include "msgPos.hpp"
-#include "msgSeg.hpp"
-#include "msgFmt.hpp"
-#include "Span.hpp"
-#include "Hexed.hpp"
-#include "AsBytes.hpp"
-#include "AsPlainStringView.hpp"
+#include "msg/Pos.hpp"
+#include "msg/Seg.hpp"
+#include "msg/Fmt.hpp"
+#include "utils/RdBuf.hpp"
+#include "utils/WrBuf.hpp"
+#include "utils/Hexed.hpp"
+#include "utils/AsBytes.hpp"
+#include "utils/AsPlainStringView.hpp"
 
 #include <optional>
 #include <ostream>
 #include <string>
-
-using RdBuf_t = Span<const unsigned char>;
-using WrBuf_t = Span<unsigned char>;
 
 namespace zip
 {
@@ -30,7 +28,7 @@ struct EOCDRec
     uint32_t sizeOfCentralDir;
     uint32_t offsetOfCentralDir;
     uint16_t commentLen;
-    RdBuf_t comment;
+    utils::RdBuf_t comment;
 
     using Format = msg::Fmt<
         msg::Seg<&EOCDRec::sig>,
@@ -60,14 +58,14 @@ struct EOCDRec
     friend std::ostream& operator<<(std::ostream& os, const EOCDRec& r)
     {
         return os
-            << "{ " << "sig:" << Hexed{r.sig, "0x", 8}
+            << "{ " << "sig:" << utils::Hexed{r.sig, "0x", 8}
             << ", " << "thisDiskNum:" << r.thisDiskNum
             << ", " << "startDiskNum:" << r.startDiskNum
             << ", " << "totalEntriesThisDisk:" << r.totalEntriesThisDisk
             << ", " << "totalEntries:" << r.totalEntries
             << ", " << "sizeOfCentralDir:" << r.sizeOfCentralDir
             << ", " << "offsetOfCentralDir:" << r.offsetOfCentralDir
-            << ", " << "comment:" << std::quoted(AsPlainStringView(r.comment))
+            << ", " << "comment:" << std::quoted(utils::AsPlainStringView(r.comment))
             << " }";
     }
 
@@ -81,7 +79,7 @@ struct EOCDRec
         return Format::MaxBytes();
     }
 
-    static std::optional<EOCDRec> read(RdBuf_t Buf)
+    static std::optional<EOCDRec> read(utils::RdBuf_t Buf)
     {
         std::optional<EOCDRec> h = EOCDRec{};
 

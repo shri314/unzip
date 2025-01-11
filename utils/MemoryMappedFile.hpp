@@ -1,10 +1,11 @@
 #pragma once
 
-#include "Span.hpp"
+#include "utils/RdBuf.hpp"
 
 #include <utility>
 
-using RdBuf_t = Span<const unsigned char>;
+namespace utils
+{
 
 class MemoryMappedFile
 {
@@ -92,3 +93,5 @@ private:
     const char* m_ErrCtx = "";
     const char* m_Err = "";
 };
+
+}

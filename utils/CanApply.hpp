@@ -2,6 +2,9 @@
 
 #include <type_traits>
 
+namespace utils
+{
+
 //
 // https://stackoverflow.com/questions/44395169/why-is-sfinae-on-if-constexpr-not-allowed
 //
@@ -28,3 +31,5 @@ namespace Impl
 
 template<template<class...>class Z, class...Ts>
 using CanApply = Impl::CanApply<Z, void, Ts...>;
+
+}

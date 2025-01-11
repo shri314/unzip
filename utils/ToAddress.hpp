@@ -1,9 +1,12 @@
 #pragma once
 
-#include "CanApply.hpp"
+#include "utils/CanApply.hpp"
 
 #include <type_traits>
 #include <memory>
+
+namespace utils
+{
 
 //
 // https://en.cppreference.com/w/cpp/memory/to_address
@@ -36,4 +39,6 @@ constexpr auto ToAddress(const T& PtrLike) noexcept
     {
         return ToAddress(PtrLike.operator->());
     }
+}
+
 }

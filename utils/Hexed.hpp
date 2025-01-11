@@ -5,6 +5,9 @@
 #include <iomanip>
 #include <ios>
 
+namespace utils
+{
+
 template<class T, size_t N>
 struct Hexed
 {
@@ -43,3 +46,5 @@ private:
     const char (&m_Prefix)[N];
     size_t m_Width = 0u;
 };
+
+}

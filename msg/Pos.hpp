@@ -1,6 +1,6 @@
 #pragma once
 
-#include "uintx.hpp"
+#include "utils/UIntX.hpp"
 
 #include <cstddef>
 
@@ -16,7 +16,7 @@ struct Pos
     static constexpr size_t MSBit_v = LSBitV + BitWidthV - 1u;
     static constexpr size_t BitWidth_v = BitWidthV;
 
-    using UIntW_t = decltype(UIntX<BitWidthV + LSBitV>());
+    using UIntW_t = decltype(utils::UIntX<BitWidthV + LSBitV>());
 };
 
 }

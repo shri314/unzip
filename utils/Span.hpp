@@ -1,10 +1,13 @@
 #pragma once
 
-#include "ToAddress.hpp"
+#include "utils/ToAddress.hpp"
 
 #include <array>
 #include <cassert>
 #include <algorithm>
+
+namespace utils
+{
 
 template<class T>
 struct Span
@@ -251,3 +254,5 @@ private:
     T* m_Data = nullptr;
     size_t m_Sz = 0u;
 };
+
+}
