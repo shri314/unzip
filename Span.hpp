@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ToAddress.hpp"
+
 #include <array>
 #include <cassert>
 #include <algorithm>
@@ -64,7 +66,7 @@ struct Span
         BegIt Beg,
         EndIt End
         ) noexcept
-        : m_Data(Beg.operator->()) // ?? FIXME: Is this safe, esp when Beg == End
+        : m_Data(ToAddress(Beg))
         , m_Sz(End - Beg)
     {
     }
@@ -159,6 +161,26 @@ struct Span
         assert(m_Sz > 0u);
 
         return (*this)[m_Sz - 1u];
+    }
+
+    const T* cbegin() const
+    {
+        return m_Data;
+    }
+
+    const T* cend() const
+    {
+        return m_Data + m_Sz;
+    }
+
+    T* begin() const
+    {
+        return m_Data;
+    }
+
+    T* end() const
+    {
+        return m_Data + m_Sz;
     }
 
     constexpr
