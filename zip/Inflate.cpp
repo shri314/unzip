@@ -36,8 +36,8 @@ Inflate(
         return -1;
     }
 
-    ScopeExit cleanup{ [&strm]()
-                       { inflateEnd(&strm); } };
+    utils::ScopeExit cleanup{ [&strm]()
+                              { inflateEnd(&strm); } };
 
     /* decompress until deflate stream ends or end of file */
     do

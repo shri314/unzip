@@ -1,5 +1,10 @@
 #pragma once
 
+#include <utility>
+
+namespace utils
+{
+
 template<class Fn>
 struct ScopeExit
 {
@@ -22,3 +27,5 @@ struct ScopeExit
 private:
     Fn m_f;
 };
+
+}

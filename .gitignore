@@ -3,3 +3,5 @@
 a.out
 unzip-test
 *.dSYM/
+thirdparty
+tmp_*

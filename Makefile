@@ -1,5 +1,5 @@
 all:
-	g++ -fsanitize=address -g3 -o unzip-test -std=c++17 Test.cpp utils/MemoryMappedFile.cpp zip/Inflate.cpp -I . -lz 2>&1
+	g++ -fsanitize=address -g3 -o unzip-test -std=c++17 Test.cpp utils/MemoryMappedFile.cpp zip/Inflate.cpp -I . -I ./thirdparty/include -L ./thirdparty/lib -lz 2>&1
 	@for f in ./assets/test*-*.zip; \
 	do \
 		if (set -x; ./unzip-test $$f); then \
@@ -13,4 +13,4 @@ all:
 
 clean:
 	rm -f a.out *.o *.gch unzip-test a.out
-	rm -rf *.dSYM/
+	rm -rf *.dSYM/ tmp_stage/

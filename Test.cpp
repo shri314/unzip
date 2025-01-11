@@ -79,7 +79,10 @@ main(int argc, const char* argv[])
                 auto eocd = zip::EOCDRec::read(match);
                 if (!eocd || !Validate(*eocd, zipBuf.size()))
                 {
-                    std::cerr << "eocd is bogus (1)" << "\n";
+                    if (eocd)
+                        std::cerr << "eocd is bogus (1):" << *eocd << "\n";
+                    else
+                        std::cerr << "eocd is bogus (1)" << "\n";
 
                     return true;
                 }
@@ -101,7 +104,10 @@ main(int argc, const char* argv[])
                     auto [cdfh, remCdBuf] = zip::CDFHeader::read(cdBuf);
                     if (!cdfh || !Validate(*cdfh, *eocd, zipBuf.size()))
                     {
-                        std::cerr << "cdfh[" << fn << "] is bogus (1)" << "\n";
+                        if (cdfh)
+                            std::cerr << "cdfh[" << fn << "] is bogus (1):" << *cdfh << "\n";
+                        else
+                            std::cerr << "cdfh[" << fn << "] is bogus (1)" << "\n";
 
                         return true;
                     }
@@ -121,7 +127,10 @@ main(int argc, const char* argv[])
                     auto [lfh, dataBuf] = zip::LFHeader::read(lfBuf);
                     if (!lfh || !Validate(*lfh, *cdfh, *eocd, zipBuf.size()))
                     {
-                        std::cerr << "lfh[" << fn << "] is bogus (1)" << "\n";
+                        if (lfh)
+                            std::cerr << "lfh[" << fn << "] is bogus (1):" << *lfh << "\n";
+                        else
+                            std::cerr << "lfh[" << fn << "] is bogus (1)" << "\n";
 
                         return true;
                     }
@@ -139,13 +148,25 @@ main(int argc, const char* argv[])
                         std::cout << c;
                     std::cout << ":\n";
                     std::cout << "-------------------------------------\n";
-                    zip::Inflate(
-                        fileBuf,
-                        [](char x)
-                        {
+                    if (lfh->compression == 8u)
+                    {
+                        zip::Inflate(
+                            fileBuf,
+                            [](char x)
+                            {
+                                std::cout << x << std::flush;
+                            }
+                        );
+                    }
+                    else if (lfh->compression == 0u)
+                    {
+                        for (char x : fileBuf)
                             std::cout << x << std::flush;
-                        }
-                    );
+                    }
+                    else
+                    {
+                        std::cerr << "compression:" << lfh->compression << " is unimplemented" << std::endl;
+                    }
                     std::cout << "-------------------------------------\n";
 
                     cdBuf = remCdBuf;
