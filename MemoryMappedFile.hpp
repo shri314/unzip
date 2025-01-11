@@ -71,7 +71,7 @@ public:
         void
         ) const
     {
-        return m_Buf.Data() != nullptr;
+        return m_Buf.data() != nullptr;
     }
 
     RdBuf_t

@@ -7,6 +7,7 @@
 #include "Span.hpp"
 #include "Hexed.hpp"
 #include "AsBytes.hpp"
+#include "AsPlainStringView.hpp"
 
 #include <optional>
 #include <ostream>
@@ -34,8 +35,8 @@ struct LFHeader
     uint32_t originalSz;
     uint16_t nameLen;
     uint16_t exFieldLen;
-    std::string name;
-    std::vector<unsigned char> exField;
+    RdBuf_t name;
+    RdBuf_t exField;
 
     using Format = msg::Fmt<
         msg::Seg<&LFHeader::sig>,
@@ -83,7 +84,7 @@ struct LFHeader
             << ", " << "crc32:" << Hexed{r.crc32, "0x"}
             << ", " << "compressedSz:" << r.compressedSz
             << ", " << "originalSz:" << r.originalSz
-            << ", " << "name:" << std::quoted(r.name)
+            << ", " << "name:" << std::quoted(AsPlainStringView(r.name))
             << ", " << "exField:" << "[" << r.exField.size() << "...]"
             << " }";
     }

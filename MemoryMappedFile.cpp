@@ -51,7 +51,7 @@ MemoryMappedFile::~MemoryMappedFile (
 {
     if (IsValid())
     {
-        munmap( const_cast<unsigned char*>(m_Buf.Data()), m_Buf.Size() );
+        munmap( const_cast<unsigned char*>(m_Buf.data()), m_Buf.size() );
         m_Buf = {};
     }
 }

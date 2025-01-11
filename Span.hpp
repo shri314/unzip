@@ -95,8 +95,8 @@ struct Span
     Span (
         const Span<U>& arr
         ) noexcept
-        : m_Data(arr.Data())
-        , m_Sz(arr.Size())
+        : m_Data(arr.data())
+        , m_Sz(arr.size())
     {
     }
 
@@ -115,7 +115,7 @@ struct Span
 
     constexpr
     T*
-    Data (
+    data (
         void
         ) const noexcept
     {
@@ -133,7 +133,7 @@ struct Span
     }
 
     T&
-    Front (
+    front (
         void
         ) const
     {
@@ -143,7 +143,7 @@ struct Span
     }
 
     T&
-    Back (
+    back (
         void
         ) const
     {
@@ -174,7 +174,7 @@ struct Span
 
     constexpr
     size_t
-    Size (
+    size (
         void
         ) const noexcept
     {
@@ -183,7 +183,7 @@ struct Span
 
     constexpr
     bool
-    Empty (
+    empty (
         void
         ) const noexcept
     {
@@ -192,7 +192,7 @@ struct Span
 
     constexpr
     Span
-    First (
+    first (
         size_t Count
         ) const
     {
@@ -203,7 +203,7 @@ struct Span
 
     constexpr
     Span
-    Last (
+    last (
         size_t Count
         ) const
     {
@@ -214,7 +214,7 @@ struct Span
 
     constexpr
     Span
-    SubSpan (
+    subspan (
         size_t Offset
         ) const
     {
@@ -225,7 +225,7 @@ struct Span
 
     constexpr
     Span
-    SubSpan (
+    subspan (
         size_t Offset,
         size_t Count
         ) const
@@ -233,6 +233,18 @@ struct Span
         assert(Offset <= m_Sz && Count <= m_Sz - Offset);
 
         return Span{m_Data + std::min(m_Sz, Offset), std::min(m_Sz - std::min(m_Sz, Offset), Count)};
+    }
+
+    constexpr
+    friend
+    bool
+    operator== (
+        const Span& Lhs,
+        const Span& Rhs
+        )
+    {
+        return Lhs.data() == Rhs.data()
+            && Lhs.size() == Rhs.size();
     }
 
 private:

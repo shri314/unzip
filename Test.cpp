@@ -22,6 +22,20 @@ bool Validate(const zip::EOCDRec& r, size_t zipFileSize)
 }
 
 
+bool Validate(const zip::CDFHeader& r, const zip::EOCDRec& eocd, size_t zipFileSize)
+{
+    return
+        AsBytes<uint32_t, unsigned char>(r.sig) == zip::CDFHeader::SIG
+        && r.nameLen == r.name.size()
+        && r.exFieldLen == r.exField.size()
+        && r.commentLen == r.comment.size()
+        && r.diskNum == 0u
+        && r.offsetOfLFHeader < zipFileSize
+        && r.offsetOfLFHeader < eocd.offsetOfCentralDir
+        && eocd.offsetOfCentralDir - r.offsetOfLFHeader >= zip::CDFHeader::MinBytes();
+}
+
+
 int main(int argc, const char* argv[])
 {
     if (argc != 2)
@@ -42,8 +56,8 @@ int main(int argc, const char* argv[])
 
         RdBuf_t zipBuf = zipFile.Buffer();
 
-        RdBuf_t eocdScanBuf = zipBuf.Last(
-                                std::min(zip::EOCDRec::MaxBytes(), zipBuf.Size())
+        RdBuf_t eocdScanBuf = zipBuf.last(
+                                std::min(zip::EOCDRec::MaxBytes(), zipBuf.size())
                             );
 
         int e = 0;
@@ -53,7 +67,7 @@ int main(int argc, const char* argv[])
                 [&e, zipBuf](RdBuf_t match)
                 {
                     auto eocd = zip::EOCDRec::read(match);
-                    if (!eocd || !Validate(*eocd, zipBuf.Size()))
+                    if (!eocd || !Validate(*eocd, zipBuf.size()))
                     {
                         std::cout << "eocd is bogus (1)" << "\n";
 
@@ -62,7 +76,7 @@ int main(int argc, const char* argv[])
 
                     std::cout << "eocd: " << *eocd << "\n";
 
-                    RdBuf_t cdBuf = zipBuf.SubSpan(
+                    RdBuf_t cdBuf = zipBuf.subspan(
                                         eocd->offsetOfCentralDir,
                                         std::min<size_t>(
                                             zip::CDFHeader::MaxBytes() * eocd->totalEntries,
@@ -70,15 +84,20 @@ int main(int argc, const char* argv[])
                                         )
                                     );
 
-                    auto cdfh = zip::CDFHeader::read(cdBuf);
-                    if (!cdfh) // || !Validate(*cdfh, zipBuf.Size()))
+                    for (size_t fn = 0; fn < eocd->totalEntries; ++fn)
                     {
-                        std::cout << "cdfh is bogus (1)" << "\n";
+                        auto [cdfh, remBuf] = zip::CDFHeader::read(cdBuf);
+                        if (!cdfh || !Validate(*cdfh, *eocd, zipBuf.size()))
+                        {
+                            std::cout << "cdfh[" << fn << "] is bogus (1)" << "\n";
 
-                        return true;
+                            return true;
+                        }
+
+                        std::cout << "cdfh[" << fn << "]: " << *cdfh << "\n";
+
+                        cdBuf = remBuf;
                     }
-
-                    std::cout << "cdfh: " << *cdfh << "\n";
 
                     return false;
                 }

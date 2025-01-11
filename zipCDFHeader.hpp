@@ -6,6 +6,7 @@
 #include "Span.hpp"
 #include "Hexed.hpp"
 #include "AsBytes.hpp"
+#include "AsPlainStringView.hpp"
 
 #include <optional>
 #include <ostream>
@@ -38,9 +39,9 @@ struct CDFHeader
     uint16_t attrInternal;
     uint32_t attrExternal;
     uint32_t offsetOfLFHeader;
-    std::string name;
-    std::vector<unsigned char> exField;
-    std::string comment;
+    RdBuf_t name;
+    RdBuf_t exField;
+    RdBuf_t comment;
 
     using Format = msg::Fmt<
         msg::Seg<&CDFHeader::sig>,
@@ -106,9 +107,9 @@ struct CDFHeader
             << ", " << "attrInternal:" << r.attrInternal
             << ", " << "attrExternal:" << r.attrExternal
             << ", " << "offsetOfLFHeader:" << r.offsetOfLFHeader
-            << ", " << "name:" << std::quoted(r.name)
+            << ", " << "name:" << std::quoted(AsPlainStringView(r.name))
             << ", " << "exField:" << "[" << r.exField.size() << "...]"
-            << ", " << "comment:" << std::quoted(r.comment)
+            << ", " << "comment:" << std::quoted(AsPlainStringView(r.comment))
             << " }";
     }
 
@@ -122,17 +123,18 @@ struct CDFHeader
         return Format::MaxBytes();
     }
 
-    static std::optional<CDFHeader> read(RdBuf_t Buf)
+    static std::pair<std::optional<CDFHeader>,RdBuf_t> read(RdBuf_t Buf)
     {
         std::optional<CDFHeader> h = CDFHeader{};
 
         auto b = Format::read(Buf, *h);
         if (!b)
         {
+            b = Buf;
             h.reset();
         }
 
-        return h;
+        return {h, *b};
     }
 };
 

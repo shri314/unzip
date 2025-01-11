@@ -66,7 +66,7 @@ struct DnsHeader
     {
         std::optional<DnsHeader> h = DnsHeader{};
 
-        if (Buf.Size() < 4)
+        if (Buf.size() < 4)
         {
             h.reset();
             return h;
@@ -74,39 +74,39 @@ struct DnsHeader
 
         {
             uint16_t x{};
-            memcpy(&x, &Buf[0], sizeof(x));
+            memcpy(&x, Buf.data(), sizeof(x));
             h->id = (x >> 0) & 0xFFFF;
         }
-        Buf = Buf.SubSpan(2);
+        Buf = Buf.subspan(2);
         {
             uint8_t x{};
-            memcpy(&x, &Buf[0], sizeof(x));
+            memcpy(&x, Buf.data(), sizeof(x));
             h->qr = (x >> 0) & 0x01;
         }
         {
             uint8_t x{};
-            memcpy(&x, &Buf[0], sizeof(x));
+            memcpy(&x, Buf.data(), sizeof(x));
             h->opcode = ( x >> 1 ) & 0x0F;
         }
         {
             uint8_t x{};
-            memcpy(&x, &Buf[0], sizeof(x));
+            memcpy(&x, Buf.data(), sizeof(x));
             h->aa = ( x >> 5 ) & 0x01;
         }
         {
             uint8_t x{};
-            memcpy(&x, &Buf[0], sizeof(x));
+            memcpy(&x, Buf.data(), sizeof(x));
             h->tc = ( x >> 6 ) & 0x01;
         }
         {
             uint8_t x{};
-            memcpy(&x, &Buf[0], sizeof(x));
+            memcpy(&x, Buf.data(), sizeof(x));
             h->rd = ( x >> 7 ) & 0x01;
         }
-        Buf = Buf.SubSpan(1);
+        Buf = Buf.subspan(1);
         {
             uint8_t x{};
-            memcpy(&x, &Buf[0], sizeof(x));
+            memcpy(&x, Buf.data(), sizeof(x));
             h->ra = ( x >> 0 ) & 0x01;
         }
         // {
@@ -116,10 +116,10 @@ struct DnsHeader
         // }
         {
             uint8_t x{};
-            memcpy(&x, &Buf[0], sizeof(x));
+            memcpy(&x, Buf.data(), sizeof(x));
             h->rcode = ( x >> 4 ) & 0x0F;
         }
-        Buf = Buf.SubSpan(1);
+        Buf = Buf.subspan(1);
 
         return h;
     }

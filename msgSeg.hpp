@@ -73,17 +73,17 @@ struct Seg<MemPtrV, Pos<LSBitV, BitWidthV>>
         using UIntW_t = typename Pos_t::UIntW_t;
 
         UIntW_t x;
-        if (Buf.Size() >= sizeof(x))
+        if (Buf.size() >= sizeof(x))
         {
             if constexpr (MemPtrV != nullptr)
             {
-                std::memcpy(&x, Buf.Data(), sizeof(x));
+                std::memcpy(&x, Buf.data(), sizeof(x));
                 Cls.*MemPtrV = (x >> Pos_t::LSBit_v) & bitmask<UIntW_t>(Pos_t::BitWidth_v);
             }
 
             if constexpr ((Pos_t::MSBit_v + 1) % 8 == 0)
             {
-                Buf = Buf.SubSpan(sizeof(x));
+                Buf = Buf.subspan(sizeof(x));
             }
 
             return Buf;
@@ -98,18 +98,18 @@ struct Seg<MemPtrV, Pos<LSBitV, BitWidthV>>
         using UIntW_t = typename Pos_t::UIntW_t;
 
         UIntW_t x;
-        if (Buf.Size() >= sizeof(x))
+        if (Buf.size() >= sizeof(x))
         {
             if constexpr (MemPtrV != nullptr)
             {
-                std::memcpy(&x, &Buf[0], sizeof(x));
+                std::memcpy(&x, Buf.data(), sizeof(x));
                 x |= (Cls.*MemPtrV & bitmask<UIntW_t>(Pos_t::BitWidth_v)) << Pos_t::LSBit_v;
-                std::memcpy(&Buf[0], &x, sizeof(x));
+                std::memcpy(Buf.data(), &x, sizeof(x));
             }
 
             if constexpr ((Pos_t::MSBit_v + 1) % 8 == 0)
             {
-                Buf = Buf.SubSpan(sizeof(x));
+                Buf = Buf.subspan(sizeof(x));
             }
 
             return Buf;
@@ -146,14 +146,11 @@ struct Seg<MemPtr1V, Dyn<MemPtr2V, MinBytesV, MaxBytesV>>
 
         if (BytesRequested >= MinBytesV
             && BytesRequested <= MaxBytesV
-            && BytesRequested <= Buf.Size())
+            && BytesRequested <= Buf.size())
         {
-            if (BytesRequested > 0)
-            {
-                Cls.*MemPtr1V = {&Buf[0], &Buf[BytesRequested]};
-            }
+            Cls.*MemPtr1V = {Buf.data(), Buf.data() + BytesRequested};
 
-            return Buf.SubSpan(BytesRequested);
+            return Buf.subspan(BytesRequested);
         }
 
         return std::nullopt;
@@ -166,16 +163,13 @@ struct Seg<MemPtr1V, Dyn<MemPtr2V, MinBytesV, MaxBytesV>>
 
         const auto& src = Cls.*MemPtr1V;
 
-        if (MinBytesV <= Buf.Size() && Buf.Size() <= MaxBytesV &&
+        if (MinBytesV <= Buf.size() && Buf.size() <= MaxBytesV &&
             MinBytesV <= BytesRequested && BytesRequested <= MaxBytesV &&
             BytesRequested == std::size(src))
         {
-            if (BytesRequested > 0u)
-            {
-                std::memcpy(&Buf[0], &src[0], BytesRequested);
-            }
+            std::memcpy(Buf.data(), std::data(src), BytesRequested);
 
-            return Buf.SubSpan(BytesRequested);
+            return Buf.subspan(BytesRequested);
         }
 
         return std::nullopt;

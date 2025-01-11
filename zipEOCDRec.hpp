@@ -6,6 +6,7 @@
 #include "Span.hpp"
 #include "Hexed.hpp"
 #include "AsBytes.hpp"
+#include "AsPlainStringView.hpp"
 
 #include <optional>
 #include <ostream>
@@ -29,7 +30,7 @@ struct EOCDRec
     uint32_t sizeOfCentralDir;
     uint32_t offsetOfCentralDir;
     uint16_t commentLen;
-    std::string comment;
+    RdBuf_t comment;
 
     using Format = msg::Fmt<
         msg::Seg<&EOCDRec::sig>,
@@ -66,7 +67,7 @@ struct EOCDRec
             << ", " << "totalEntries:" << r.totalEntries
             << ", " << "sizeOfCentralDir:" << r.sizeOfCentralDir
             << ", " << "offsetOfCentralDir:" << r.offsetOfCentralDir
-            << ", " << "comment:" << std::quoted(r.comment)
+            << ", " << "comment:" << std::quoted(AsPlainStringView(r.comment))
             << " }";
     }
 

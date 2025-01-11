@@ -30,7 +30,7 @@ struct Fmt
     template<class ClassT>
     static constexpr std::optional<RdBuf_t> read(RdBuf_t Buf, ClassT& Cls)
     {
-        if (Buf.Size() < MinBytes())
+        if (Buf.size() < MinBytes())
         {
             return std::nullopt;
         }
@@ -53,7 +53,7 @@ struct Fmt
     template<class ClassT>
     static constexpr std::optional<WrBuf_t> write(WrBuf_t Buf, const ClassT& Cls)
     {
-        if (Buf.Size() < MinBytes())
+        if (Buf.size() < MinBytes())
         {
             return std::nullopt;
         }
