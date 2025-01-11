@@ -49,25 +49,14 @@ struct Span
     {
     }
 
-    template<class U>
+    template<class IteratorT>
     constexpr
     Span (
-        U* Beg,
-        const U* End
+        IteratorT BegIt,
+        IteratorT EndIt
         ) noexcept
-        : m_Data(Beg)
-        , m_Sz(End - Beg)
-    {
-    }
-
-    template<class BegIt, class EndIt>
-    constexpr
-    Span (
-        BegIt Beg,
-        EndIt End
-        ) noexcept
-        : m_Data(ToAddress(Beg))
-        , m_Sz(End - Beg)
+        : m_Data(ToAddress(BegIt))
+        , m_Sz(EndIt - BegIt)
     {
     }
 
@@ -220,7 +209,7 @@ struct Span
     {
         assert(Count <= m_Sz);
 
-        return Span{m_Data + std::min(m_Sz, Count), std::min(m_Sz, Count)};
+        return Span{m_Data + m_Sz - std::min(m_Sz, Count), std::min(m_Sz, Count)};
     }
 
     constexpr
