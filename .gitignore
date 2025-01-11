@@ -1,5 +1,5 @@
 *.o
 *.gch
 a.out
-msg-test
+unzip-test
 *.dSYM/

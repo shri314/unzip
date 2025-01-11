@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+#
+# https://gist.github.com/gumblex/5573ddb33c21fca4aecf
+#
+
 """
 Simple command line utility to create Zip64 files.
 For Python 3.3+

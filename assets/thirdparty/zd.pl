@@ -1,5 +1,9 @@
 #!/usr/bin/perl
 
+#
+# https://github.com/pmqs/zipdetails/blob/main/bin/zipdetails
+#
+
 # zipdetails
 #
 # Display info on the contents of a Zip file
