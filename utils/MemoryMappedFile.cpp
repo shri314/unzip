@@ -7,6 +7,7 @@
 #include <unistd.h>
 
 #include <cstring>
+#include <cerrno>
 
 namespace utils
 {

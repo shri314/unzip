@@ -56,7 +56,9 @@ Inflate(
                     return -1;
                 case Z_NEED_DICT:
                     ret = Z_DATA_ERROR; /* and fall through */
+		    [[fallthrough]];
                 case Z_DATA_ERROR:
+		    [[fallthrough]];
                 case Z_MEM_ERROR:
                     return -1;
             }

@@ -88,8 +88,8 @@ public:
 
 private:
     RdBuf_t m_Buf;
-    const char* m_ErrCtx = "";
     const char* m_Err    = "";
+    const char* m_ErrCtx = "";
 };
 
 }

@@ -8,7 +8,7 @@
 #include <cassert>
 #include <iostream>
 
-constexpr bool
+bool
 Validate(const zip::EOCDRec& r, size_t zipFileSize)
 {
     return AsBytes<uint32_t, unsigned char>(r.sig) == zip::EOCDRec::SIG
@@ -22,7 +22,7 @@ Validate(const zip::EOCDRec& r, size_t zipFileSize)
         && r.sizeOfCentralDir >= r.totalEntries * zip::CDFHeader::MinBytes();
 }
 
-constexpr bool
+bool
 Validate(const zip::CDFHeader& r, const zip::EOCDRec& eocd, size_t zipFileSize)
 {
     return AsBytes<uint32_t, unsigned char>(r.sig) == zip::CDFHeader::SIG
@@ -35,8 +35,8 @@ Validate(const zip::CDFHeader& r, const zip::EOCDRec& eocd, size_t zipFileSize)
         && eocd.offsetOfCentralDir - r.offsetOfLFHeader >= zip::LFHeader::MinBytes();
 }
 
-constexpr bool
-Validate(const zip::LFHeader& r, const zip::CDFHeader& cdfh, const zip::EOCDRec& eocd, size_t zipFileSize)
+bool
+Validate(const zip::LFHeader& r, const zip::CDFHeader&, const zip::EOCDRec& eocd, size_t zipFileSize)
 {
     return AsBytes<uint32_t, unsigned char>(r.sig) == zip::LFHeader::SIG
         && r.nameLen == r.name.size()
