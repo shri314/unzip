@@ -6,7 +6,7 @@ namespace utils
 {
 
 template<class Range, class F>
-constexpr void
+constexpr bool
 ForEach(
     Range&& Rng,
     F&& Func
@@ -16,9 +16,11 @@ ForEach(
     {
         if (!Func(e))
         {
-            break;
+            return false;
         }
     }
+
+    return true;
 }
 
 }
