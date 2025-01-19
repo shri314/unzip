@@ -11,6 +11,12 @@ all:
 		fi; \
 	done
 
+format:
+	@if ! which clang-format-20 1>/dev/null; then echo "Need clang-fomat-20, see https://apt.llvm.org/"; exit 1; fi
+	find . -name \*.hpp -o -name \*.cpp \
+		| grep -v -e thridparty -e tmp_stage \
+		| xargs clang-format-20 -i --style=file
+
 clean:
 	rm -f a.out *.o *.gch unzip-test a.out
 	rm -rf *.dSYM/ tmp_stage/
