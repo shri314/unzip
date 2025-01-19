@@ -2,6 +2,7 @@
 #include "zip/EOCDRec.hpp"
 #include "zip/CDFHeader.hpp"
 #include "zip/Inflate.hpp"
+#include "utils/ForEach.hpp"
 #include "utils/ForEachFindEnd.hpp"
 #include "utils/MemoryMappedFile.hpp"
 
@@ -45,6 +46,33 @@ Validate(const zip::LFHeader& r, const zip::CDFHeader&, const zip::EOCDRec& eocd
         && r.compressedSz < eocd.offsetOfCentralDir;
 }
 
+std::vector<zip::EOCDRec>
+GetPotentialEOCDs(utils::RdBuf_t zipBuf)
+{
+    std::vector<zip::EOCDRec> results;
+
+    utils::RdBuf_t eocdScanBuf = zipBuf.last(
+        std::min(zip::EOCDRec::MaxBytes(), zipBuf.size())
+    );
+
+    utils::ForEachFindEnd(
+        eocdScanBuf,
+        zip::EOCDRec::SIG,
+        [&results, zipBuf](utils::RdBuf_t match)
+        {
+            auto eocd = zip::EOCDRec::read(match);
+            if (eocd && Validate(*eocd, zipBuf.size()))
+            {
+                results.push_back(*eocd);
+            }
+
+            return true;
+        }
+    );
+
+    return results;
+}
+
 int
 main(int argc, const char* argv[])
 {
@@ -66,43 +94,34 @@ main(int argc, const char* argv[])
 
         utils::RdBuf_t zipBuf = zipFile.Buffer();
 
-        utils::RdBuf_t eocdScanBuf = zipBuf.last(
-            std::min(zip::EOCDRec::MaxBytes(), zipBuf.size())
-        );
+        std::vector<zip::EOCDRec> potentialEOCDRecs = GetPotentialEOCDs(zipBuf);
+        if (potentialEOCDRecs.size() <= 0)
+        {
+            std::cout << "no valid eocd records found\n";
+            return -1;
+        }
 
         int e = 0;
-        ForEachFindEnd(
-            eocdScanBuf,
-            zip::EOCDRec::SIG,
-            [&e, zipBuf](utils::RdBuf_t match)
+        utils::ForEach(
+            potentialEOCDRecs,
+            [&e, zipBuf](auto& eocd)
             {
-                auto eocd = zip::EOCDRec::read(match);
-                if (!eocd || !Validate(*eocd, zipBuf.size()))
-                {
-                    if (eocd)
-                        std::cerr << "eocd is bogus (1):" << *eocd << "\n";
-                    else
-                        std::cerr << "eocd is bogus (1)" << "\n";
-
-                    return true;
-                }
-
                 //
-                // std::cerr << "eocd: " << *eocd << "\n";
+                // std::cerr << "eocd: " << eocd << "\n";
                 //
 
                 utils::RdBuf_t cdBuf = zipBuf.subspan(
-                    eocd->offsetOfCentralDir,
+                    eocd.offsetOfCentralDir,
                     std::min<size_t>(
-                        zip::CDFHeader::MaxBytes() * eocd->totalEntries,
-                        eocd->sizeOfCentralDir
+                        zip::CDFHeader::MaxBytes() * eocd.totalEntries,
+                        eocd.sizeOfCentralDir
                     )
                 );
 
-                for (size_t fn = 0; fn < eocd->totalEntries; ++fn)
+                for (size_t fn = 0; fn < eocd.totalEntries; ++fn)
                 {
                     auto [cdfh, remCdBuf] = zip::CDFHeader::read(cdBuf);
-                    if (!cdfh || !Validate(*cdfh, *eocd, zipBuf.size()))
+                    if (!cdfh || !Validate(*cdfh, eocd, zipBuf.size()))
                     {
                         if (cdfh)
                             std::cerr << "cdfh[" << fn << "] is bogus (1):" << *cdfh << "\n";
@@ -120,12 +139,12 @@ main(int argc, const char* argv[])
                         cdfh->offsetOfLFHeader,
                         std::min<size_t>(
                             zip::LFHeader::MaxBytes(),
-                            eocd->offsetOfCentralDir
+                            eocd.offsetOfCentralDir
                         )
                     );
 
                     auto [lfh, dataBuf] = zip::LFHeader::read(lfBuf);
-                    if (!lfh || !Validate(*lfh, *cdfh, *eocd, zipBuf.size()))
+                    if (!lfh || !Validate(*lfh, *cdfh, eocd, zipBuf.size()))
                     {
                         if (lfh)
                             std::cerr << "lfh[" << fn << "] is bogus (1):" << *lfh << "\n";

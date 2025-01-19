@@ -10,7 +10,7 @@ constexpr void
 ForEachFindEnd(
     Range1&& Rng,
     Range2&& SRng,
-    F&& func
+    F&& Func
 )
 {
     auto cend = Rng.cend();
@@ -26,7 +26,7 @@ ForEachFindEnd(
             break;
         }
 
-        if (!func({ pos, cend }))
+        if (!Func({ pos, cend }))
         {
             break;
         }
