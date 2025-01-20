@@ -5,3 +5,4 @@ unzip-test
 *.dSYM/
 thirdparty
 tmp_*
+tests/test-expected
